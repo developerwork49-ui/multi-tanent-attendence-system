@@ -10,7 +10,7 @@ import { qrSvg } from "@/lib/qr";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { PrintButton } from "@/components/print-button";
 import { StudentCard } from "@/components/student-card";
-import { Card, EmptyState, PageHeader, Pagination, inputClass } from "@/components/ui";
+import { Button, Card, EmptyState, inputClass, PageHeader, Pagination, subtleLink } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Print cards" };
 
@@ -78,8 +78,8 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/card
               <label htmlFor="q" className="sr-only">Search</label>
               <input id="q" name="q" type="search" defaultValue={q} placeholder="Only some students? Search name or ID…" className={`${inputClass} mt-0`} />
             </div>
-            <button type="submit" className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Show</button>
-            {(classParam || q) && <Link href="/school/cards" className="py-2 text-sm text-slate-600 hover:underline">Clear</Link>}
+            <Button type="submit" variant="secondary">Show</Button>
+            {(classParam || q) && <Link href="/school/cards" className={subtleLink}>Clear</Link>}
           </form>
           {total > PAGE_SIZE && (
             <Pagination page={page} pageSize={PAGE_SIZE} total={total} noun="cards" href={(p) => withQuery("/school/cards", { class: classParam, q, page: p })} />

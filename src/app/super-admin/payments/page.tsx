@@ -11,7 +11,7 @@ import { dateOnlyToDb, dbToDateOnly, isMonth, monthLabel, shiftMonth, todayInZon
 import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import type { Prisma } from "@/generated/prisma/client";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { Card, EmptyState, PageHeader, Pagination, Stat, inputClass, td, th } from "@/components/ui";
+import { Button, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, Stat, subtleLink, td, th, theadRow, StatGrid } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Payments" };
 
@@ -62,17 +62,17 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
 
   return (
     <div className="space-y-4">
-      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <StatGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {totals.length === 0 ? (
-          <Stat label="Total received" value="—" />
+          <Stat label="Total received" value="—" icon="wallet" />
         ) : (
           totals.map((t) => (
-            <Stat key={t.currency} label={`Total (${t.currency})`} value={formatMoney(t._sum.amountMinor ?? 0, t.currency)} hint={`${t._count._all} payments`} />
+            <Stat key={t.currency} label={`Received · ${t.currency}`} value={formatMoney(t._sum.amountMinor ?? 0, t.currency)} hint={`${t._count._all} payments`} icon="wallet" tone="gold" />
           ))
         )}
-      </dl>
+      </StatGrid>
       <Card>
-        <form className="flex flex-wrap items-end gap-3 border-b border-slate-100 p-4">
+        <form className={filterBar}>
           <div>
             <label htmlFor="school" className="sr-only">School</label>
             <select id="school" name="school" defaultValue={schoolId ?? ""} className={`${inputClass} mt-0 w-auto max-w-64`}>
@@ -91,11 +91,9 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
               ))}
             </select>
           </div>
-          <button type="submit" className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
-            Filter
-          </button>
+          <Button type="submit" variant="secondary">Filter</Button>
           {(month || schoolId) && (
-            <Link href="/super-admin/payments" className="py-2 text-sm text-slate-600 hover:underline">Clear</Link>
+            <Link href="/super-admin/payments" className={subtleLink}>Clear</Link>
           )}
         </form>
         {payments.length === 0 ? (
@@ -103,8 +101,8 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
+              <thead>
+                <tr className={theadRow}>
                   <th scope="col" className={th}>Paid on</th>
                   <th scope="col" className={th}>School</th>
                   <th scope="col" className={`${th} text-right`}>Amount</th>

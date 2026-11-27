@@ -16,7 +16,10 @@ Small helpers: `qrcode` (QR images), `jsqr` (camera decoding fallback), `read-ex
 3. `npm install`
 4. `npm run db:deploy` to apply all migrations (including Row-Level Security).
 5. `npm run create-super-admin` to create the first Super Admin login (asks for the details).
-6. `npm run dev` and open http://localhost:3000
+6. `npm run dev` and open http://localhost:3000 (development mode: each page is compiled the first time you open it, so first visits are slow).
+7. For normal speed use the production build: `npm run preview` (= `next build && next start`), then open http://localhost:3000.
+
+Forgot a password? `npm run reset-password` (asks for the email and a new hidden password; signs that account out everywhere).
 
 ## Checks
 
@@ -34,10 +37,13 @@ Small helpers: `qrcode` (QR images), `jsqr` (camera decoding fallback), `read-ex
 | `/super-admin` | Super Admin | Dashboard, "needs attention" list, recent activity |
 | `/super-admin/schools` | Super Admin | Create/edit schools, School Admins, subscription, payments |
 | `/super-admin/plans`, `/subscriptions`, `/payments`, `/storage` | Super Admin | Billing and storage overview |
+| `/super-admin/notifications` | Super Admin | Send messages to one school or all schools; see who read them |
+| `/super-admin/settings` | Super Admin | Platform name, support contact, upgrade message, default time zone |
 | `/school` | School Admin | Dashboard: present today, 7-day chart, storage, subscription |
 | `/school/scan` | School Admin | QR attendance: camera, or a USB/Bluetooth handheld scanner |
 | `/school/attendance` | School Admin | Monthly register, manual edits, CSV export |
 | `/school/students`, `/classes`, `/import`, `/cards` | School Admin | Students, classes, Excel/CSV import, printable cards |
+| `/school/notifications` | School Admin | Messages from the platform (unread badge in the menu), account alerts, support contact |
 
 ## Important rules
 
@@ -51,4 +57,4 @@ Small helpers: `qrcode` (QR images), `jsqr` (camera decoding fallback), `read-ex
 ## Not done yet
 
 - Deployment: Vercel, plus a separate non-owner database role for the running app (see the project notes).
-- Notifications and platform settings.
+- Email notifications (needs an email service account; messages are currently shown inside the app only).

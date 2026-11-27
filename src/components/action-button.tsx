@@ -23,7 +23,7 @@ export function ActionButton({ action, fields, label, pendingLabel, confirm, var
   const [asking, setAsking] = useState(false);
   const hidden = Object.entries(fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={String(v)} />);
   const trigger = link
-    ? "text-sm text-blue-700 hover:underline disabled:opacity-60"
+    ? "text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800 disabled:opacity-60"
     : undefined;
 
   return (

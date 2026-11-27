@@ -269,6 +269,55 @@ SELECT pg_temp.expect_count('Cannot edit audit entries',
 SELECT pg_temp.expect_count('Cannot delete audit entries',
   $q$WITH d AS (DELETE FROM audit_logs WHERE action LIKE 'test.%' RETURNING 1) SELECT count(*) FROM d$q$, 0);
 
+\echo '--- Platform settings and notifications ---'
+SELECT pg_temp.act_as('system');
+INSERT INTO users (id, role, school_id, email, full_name, password_hash, updated_at) VALUES
+  (9003, 'SCHOOL_ADMIN', 9002, 'b-admin@x.com', 'B Admin', 'test-hash', now());
+INSERT INTO notifications (id, school_id, title, body) VALUES
+  (9001, NULL, 'To all', 'Hello everyone'),
+  (9002, 9001, 'To A',   'Only for A'),
+  (9003, 9002, 'To B',   'Only for B');
+SELECT pg_temp.expect_fail('Second settings row',
+  $q$INSERT INTO platform_settings (id, updated_at) VALUES (2, now())$q$);
+SELECT pg_temp.expect_fail('Blank platform name',
+  $q$UPDATE platform_settings SET platform_name = '  ' WHERE id = 1$q$);
+SELECT pg_temp.expect_fail('Notification without a title',
+  $q$INSERT INTO notifications (title, body) VALUES (' ', 'x')$q$);
+SELECT pg_temp.expect_fail('Read receipt linking a School A admin to School B',
+  $q$INSERT INTO notification_reads (notification_id, user_id, school_id) VALUES (9001, 9001, 9002)$q$);
+
+SELECT pg_temp.act_as('school_admin', '9001');
+SELECT pg_temp.expect_count('School can read the settings',           'SELECT count(*) FROM platform_settings', 1);
+SELECT pg_temp.expect_count('School cannot change the settings',
+  $q$WITH u AS (UPDATE platform_settings SET platform_name = 'Hacked' RETURNING 1) SELECT count(*) FROM u$q$, 0);
+SELECT pg_temp.expect_count('School A sees "all" + its own notifications', 'SELECT count(*) FROM notifications WHERE id IN (9001, 9002, 9003)', 2);
+SELECT pg_temp.expect_count('School A cannot see School B''s notification', 'SELECT count(*) FROM notifications WHERE id = 9003', 0);
+SELECT pg_temp.expect_fail('School cannot send a notification',
+  $q$INSERT INTO notifications (school_id, title, body) VALUES (9001, 'Fake', 'x')$q$);
+SELECT pg_temp.expect_count('School cannot delete a notification',
+  $q$WITH d AS (DELETE FROM notifications WHERE id IN (9001, 9002) RETURNING 1) SELECT count(*) FROM d$q$, 0);
+SELECT pg_temp.expect_ok('School A admin marks a notification read',
+  $q$INSERT INTO notification_reads (notification_id, user_id, school_id) VALUES (9002, 9001, 9001)$q$);
+SELECT pg_temp.expect_fail('Cannot mark School B''s notification read',
+  $q$INSERT INTO notification_reads (notification_id, user_id, school_id) VALUES (9003, 9001, 9001)$q$);
+SELECT pg_temp.expect_fail('Cannot write a read receipt for School B',
+  $q$INSERT INTO notification_reads (notification_id, user_id, school_id) VALUES (9001, 9003, 9002)$q$);
+
+SELECT pg_temp.act_as('school_admin', '9002');
+SELECT pg_temp.expect_count('School B cannot see A''s read receipts', 'SELECT count(*) FROM notification_reads', 0);
+
+SELECT pg_temp.act_as('super_admin');
+SELECT pg_temp.expect_ok('Super Admin changes the settings',
+  $q$UPDATE platform_settings SET support_email = 'help@x.com' WHERE id = 1$q$);
+SELECT pg_temp.expect_count('Super Admin sees all notifications', 'SELECT count(*) FROM notifications WHERE id IN (9001, 9002, 9003)', 3);
+SELECT pg_temp.expect_count('Super Admin sees School A''s read receipt', 'SELECT count(*) FROM notification_reads WHERE notification_id = 9002', 1);
+SELECT pg_temp.expect_ok('Super Admin deletes a notification', 'DELETE FROM notifications WHERE id = 9002');
+SELECT pg_temp.expect_count('...and its read receipts go with it', 'SELECT count(*) FROM notification_reads WHERE notification_id = 9002', 0);
+
+SELECT pg_temp.act_as('');
+SELECT pg_temp.expect_count('No identity: settings invisible',      'SELECT count(*) FROM platform_settings', 0);
+SELECT pg_temp.expect_count('No identity: notifications invisible', 'SELECT count(*) FROM notifications', 0);
+
 \echo '--- RLS: internal system scope ---'
 SELECT pg_temp.act_as('system');
 SELECT pg_temp.expect_count('System can read sessions (for login checks)', $q$SELECT count(*) FROM sessions WHERE id = repeat('b', 64)$q$, 1);

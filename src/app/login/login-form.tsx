@@ -2,14 +2,15 @@
 
 import { useActionState } from "react";
 import { login, type LoginState } from "@/lib/auth/actions";
+import { Alert, Button, inputClass } from "@/components/ui";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState<LoginState, FormData>(login, undefined);
 
   return (
-    <form action={action} className="mt-6 space-y-4">
+    <form action={action} className="mt-8 space-y-5">
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+        <label htmlFor="email" className="block text-[13px] font-semibold text-slate-700">
           Email
         </label>
         <input
@@ -20,11 +21,11 @@ export function LoginForm() {
           required
           maxLength={254}
           defaultValue={state?.email ?? ""}
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className={inputClass}
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+        <label htmlFor="password" className="block text-[13px] font-semibold text-slate-700">
           Password
         </label>
         <input
@@ -34,23 +35,17 @@ export function LoginForm() {
           autoComplete="current-password"
           required
           maxLength={200}
-          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className={inputClass}
         />
       </div>
 
       {state?.error && (
-        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          {state.error}
-        </p>
+        <Alert tone="error">{state.error}</Alert>
       )}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
-      >
+      <Button type="submit" disabled={pending} className="w-full py-3 text-[15px]">
         {pending ? "Signing in…" : "Sign in"}
-      </button>
+      </Button>
     </form>
   );
 }

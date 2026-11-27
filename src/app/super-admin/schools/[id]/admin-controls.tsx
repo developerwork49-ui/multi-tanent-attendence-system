@@ -90,11 +90,11 @@ export function AdminRowActions({ userId, email, isActive }: { userId: number; e
   const state = resetState ?? toggleState;
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <button type="button" className="text-sm text-blue-700 hover:underline" onClick={() => setMode("reset")}>
+      <button type="button" className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800" onClick={() => setMode("reset")}>
         Reset password
       </button>
       <span className="text-slate-300">·</span>
-      <button type="button" className="text-sm text-blue-700 hover:underline" onClick={() => setMode("toggle")}>
+      <button type="button" className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800" onClick={() => setMode("toggle")}>
         {isActive ? "Disable" : "Enable"}
       </button>
       {state?.error && <span className="text-xs text-red-600">{state.error}</span>}

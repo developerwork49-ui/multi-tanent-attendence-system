@@ -78,26 +78,26 @@ export function ImportForm() {
       <Card className="p-5">
         <form ref={formRef} onSubmit={(e) => { e.preventDefault(); submit("preview"); }} onChange={readOptions} className="space-y-5">
           <div>
-            <label htmlFor="file" className="block text-sm font-medium text-slate-700">Excel or CSV file</label>
+            <label htmlFor="file" className="block text-[13px] font-semibold text-slate-700">Excel or CSV file</label>
             <input
               id="file"
               name="file"
               type="file"
               accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
               onChange={(e) => setFile(e.target.files?.[0])}
-              className="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-sm file:font-medium hover:file:bg-slate-200"
+              className="mt-2 block w-full cursor-pointer rounded-2xl border-2 border-dashed border-slate-200 bg-[rgb(255_255_255/0.02)] p-3 text-sm text-slate-600 transition-colors hover:border-blue-300 file:mr-4 file:cursor-pointer file:rounded-xl file:border-0 file:bg-metal-gold file:px-4 file:py-2 file:text-sm file:font-bold file:text-canvas"
             />
             <p className="mt-1 text-xs text-slate-500">Max 2 MB and 5,000 students per file.</p>
           </div>
           <fieldset>
-            <legend className="text-sm font-medium text-slate-700">If a Student ID already exists</legend>
+            <legend className="text-[13px] font-semibold text-slate-700">If a Student ID already exists</legend>
             <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-700">
-              <label className="flex items-center gap-2"><input type="radio" name="mode" value="skip" defaultChecked /> Skip that row (keep current data)</label>
-              <label className="flex items-center gap-2"><input type="radio" name="mode" value="update" /> Update name and class from the file</label>
+              <label className="flex items-center gap-2"><input type="radio" name="mode" value="skip" defaultChecked className="accent-[#e5c07b]" /> Skip that row (keep current data)</label>
+              <label className="flex items-center gap-2"><input type="radio" name="mode" value="update" className="accent-[#e5c07b]" /> Update name and class from the file</label>
             </div>
           </fieldset>
           <label className="flex items-center gap-2 text-sm text-slate-700">
-            <input type="checkbox" name="createClasses" defaultChecked className="h-4 w-4 rounded border-slate-300" />
+            <input type="checkbox" name="createClasses" defaultChecked className="h-4 w-4 rounded border-slate-300 accent-[#e5c07b]" />
             Create missing classes automatically
           </label>
           <div className="flex flex-wrap items-center gap-2">
@@ -131,9 +131,9 @@ export function ImportForm() {
                 ["Skip", report.skip],
                 ["Errors", report.errors],
               ].map(([l, v]) => (
-                <div key={l} className="rounded-md bg-slate-50 px-3 py-2">
-                  <dt className="text-xs text-slate-500">{l}</dt>
-                  <dd className="text-lg font-semibold tabular-nums">{v}</dd>
+                <div key={l} className="rounded-2xl bg-[rgb(255_255_255/0.035)] px-4 py-3 ring-1 ring-line">
+                  <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">{l}</dt>
+                  <dd className={`mt-1 text-2xl font-black tabular-nums ${l === "Errors" && Number(v) > 0 ? "text-red-500" : l === "New" ? "text-emerald-600" : "text-slate-900"}`}>{v}</dd>
                 </div>
               ))}
             </dl>

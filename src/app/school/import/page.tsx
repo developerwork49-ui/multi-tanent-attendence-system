@@ -5,7 +5,7 @@ import { schoolDb } from "@/lib/db";
 import { storageStatus } from "@/lib/storage";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { StorageNotice } from "@/components/storage-notice";
-import { Card, PageHeader } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
 import { ImportForm } from "./import-form";
 
 export const metadata: Metadata = { title: "Import students" };
@@ -27,18 +27,26 @@ async function Content() {
   return (
     <div className="max-w-5xl space-y-6">
       <StorageNotice status={storage} />
-      <Card className="p-5">
-        <ol className="list-decimal space-y-1.5 pl-5 text-sm text-slate-700">
-          <li>
-            Download the template:{" "}
-            <a href="/school/import/template" className="font-medium text-blue-700 hover:underline" download>Excel (.xlsx)</a> or{" "}
-            <a href="/school/import/template?format=csv" className="font-medium text-blue-700 hover:underline" download>CSV</a>.
+      <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          [
+            "Download the template",
+            <>
+              <a href="/school/import/template" className="font-semibold text-blue-700 hover:text-blue-800" download>Excel (.xlsx)</a> or{" "}
+              <a href="/school/import/template?format=csv" className="font-semibold text-blue-700 hover:text-blue-800" download>CSV</a>
+            </>,
+          ],
+          ["Fill it in", <>One student per row: <strong className="text-slate-800">Student ID</strong>, <strong className="text-slate-800">Full Name</strong>, Class.</>],
+          ["Check the file", "Nothing is saved yet — you see what happens to every row."],
+          ["Import", "All-or-nothing: if anything fails, nothing is saved."],
+        ].map(([title, text], i) => (
+          <li key={i} className="glass relative overflow-hidden rounded-3xl p-5">
+            <span className="bg-metal-gold flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-canvas shadow-gold">{i + 1}</span>
+            <p className="mt-3 font-extrabold tracking-tight text-slate-900">{title}</p>
+            <p className="mt-1 text-sm text-slate-500">{text}</p>
           </li>
-          <li>Fill in one student per row: <strong>Student ID</strong>, <strong>Full Name</strong> and (optional) <strong>Class</strong>.</li>
-          <li>Upload it and press <strong>Check file</strong>. Nothing is saved yet — you will see what will happen to every row.</li>
-          <li>If it looks right, press <strong>Import</strong>. The import is all-or-nothing: if anything fails, nothing is saved.</li>
-        </ol>
-      </Card>
+        ))}
+      </ol>
       <ImportForm />
     </div>
   );

@@ -8,7 +8,7 @@ import { toId } from "@/lib/form";
 import { one, pageParam, withQuery } from "@/lib/params";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { StudentPhoto } from "@/components/student-photo";
-import { Alert, Badge, ButtonLink, Card, EmptyState, PageHeader, Pagination, inputClass, td, th } from "@/components/ui";
+import { Alert, Badge, Button, ButtonLink, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, subtleLink, tbodyRow, td, th, theadRow } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Students" };
 
@@ -72,7 +72,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
     <div className="space-y-4">
       {deleted && <Alert tone="success">Student deleted.</Alert>}
       <Card>
-        <form className="flex flex-wrap items-end gap-3 border-b border-slate-100 p-4" role="search">
+        <form className={filterBar} role="search">
           <div className="min-w-48 flex-1">
             <label htmlFor="q" className="sr-only">Search</label>
             <input id="q" name="q" type="search" defaultValue={q} placeholder="Search name or student ID…" className={`${inputClass} mt-0`} />
@@ -95,8 +95,8 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
               <option value="all">All</option>
             </select>
           </div>
-          <button type="submit" className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Filter</button>
-          {filtered && <Link href="/school/students" className="py-2 text-sm text-slate-600 hover:underline">Clear</Link>}
+          <Button type="submit" variant="secondary">Filter</Button>
+          {filtered && <Link href="/school/students" className={subtleLink}>Clear</Link>}
         </form>
 
         {students.length === 0 ? (
@@ -105,16 +105,16 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
               "No students match these filters."
             ) : (
               <>
-                No students yet. <Link href="/school/students/new" className="text-blue-700 hover:underline">Add one</Link> or{" "}
-                <Link href="/school/import" className="text-blue-700 hover:underline">import from Excel</Link>.
+                No students yet. <Link href="/school/students/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Add one</Link> or{" "}
+                <Link href="/school/import" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">import from Excel</Link>.
               </>
             )}
           </EmptyState>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
+              <thead>
+                <tr className={theadRow}>
                   <th scope="col" className={th}>Name</th>
                   <th scope="col" className={th}>Student ID</th>
                   <th scope="col" className={th}>Class</th>
@@ -124,18 +124,18 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {students.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50">
+                  <tr key={s.id} className={tbodyRow}>
                     <td className={td}>
-                      <Link href={`/school/students/${s.id}`} className="flex items-center gap-3 font-medium text-slate-900 hover:underline">
+                      <Link href={`/school/students/${s.id}`} className="flex items-center gap-3 font-bold text-slate-900 transition-colors hover:text-blue-700">
                         <StudentPhoto student={s} size={32} />
                         {s.fullName}
                       </Link>
                     </td>
                     <td className={`${td} font-mono text-xs text-slate-700`}>{s.studentCode}</td>
                     <td className={`${td} text-slate-600`}>{s.classGroup?.name ?? "—"}</td>
-                    <td className={td}>{s.status === "ACTIVE" ? <Badge tone="green">Active</Badge> : <Badge>Inactive</Badge>}</td>
+                    <td className={td}>{s.status === "ACTIVE" ? <Badge tone="green" dot>Active</Badge> : <Badge dot>Inactive</Badge>}</td>
                     <td className={`${td} text-right`}>
-                      <Link href={`/school/students/${s.id}/card`} className="text-sm text-blue-700 hover:underline">Card</Link>
+                      <Link href={`/school/students/${s.id}/card`} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">Card</Link>
                     </td>
                   </tr>
                 ))}

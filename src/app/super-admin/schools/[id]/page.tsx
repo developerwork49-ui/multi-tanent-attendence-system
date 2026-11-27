@@ -85,7 +85,7 @@ async function SchoolDetail({ params, searchParams }: PageProps<"/super-admin/sc
         title={school.name}
         description={
           <>
-            <Link href="/super-admin/schools" className="text-blue-700 hover:underline">
+            <Link href="/super-admin/schools" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">
               Schools
             </Link>{" "}
             / {school.name}
@@ -117,7 +117,7 @@ async function SchoolDetail({ params, searchParams }: PageProps<"/super-admin/sc
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <Card>
-            <CardHeader title="Details" />
+            <CardHeader title="Details" icon="info" />
             <dl className="divide-y divide-slate-100">
               {details.map(([label, value]) => (
                 <div key={label} className="grid grid-cols-3 gap-4 px-5 py-3 text-sm">
@@ -176,18 +176,18 @@ async function SchoolDetail({ params, searchParams }: PageProps<"/super-admin/sc
 
         <div className="space-y-6">
           <Card>
-            <CardHeader title="At a glance" />
+            <CardHeader title="At a glance" icon="chart" />
             <dl className="grid grid-cols-2 gap-4 p-5">
               <div>
-                <dt className="text-xs text-slate-500">Students</dt>
-                <dd className="text-xl font-semibold tabular-nums">{school._count.students.toLocaleString("en-US")}</dd>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Students</dt>
+                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{school._count.students.toLocaleString("en-US")}</dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Classes</dt>
-                <dd className="text-xl font-semibold tabular-nums">{school._count.classGroups}</dd>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Classes</dt>
+                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{school._count.classGroups}</dd>
               </div>
               <div className="col-span-2">
-                <dt className="mb-1 text-xs text-slate-500">Storage used</dt>
+                <dt className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Storage used</dt>
                 <dd>
                   {storage.quota.limit === null ? (
                     <span className="text-sm text-slate-700">{formatBytes(storage.total)} used · no plan or custom quota</span>
@@ -200,7 +200,7 @@ async function SchoolDetail({ params, searchParams }: PageProps<"/super-admin/sc
           </Card>
 
           <Card>
-            <CardHeader title="Subscription" />
+            <CardHeader title="Subscription" icon="subscriptions" />
             <div className="space-y-4 p-5">
               {current ? (
                 <dl className="space-y-1 text-sm">
@@ -257,7 +257,7 @@ async function SchoolDetail({ params, searchParams }: PageProps<"/super-admin/sc
           </Card>
 
           <Card>
-            <CardHeader title="Payments" actions={<Link href={`/super-admin/payments?school=${school.id}`} className="text-sm text-blue-700 hover:underline">All</Link>} />
+            <CardHeader title="Payments" icon="payments" actions={<Link href={`/super-admin/payments?school=${school.id}`} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">All</Link>} />
             <div className="space-y-4 p-5">
               {school.payments.length === 0 ? (
                 <p className="text-sm text-slate-500">No payments recorded yet.</p>

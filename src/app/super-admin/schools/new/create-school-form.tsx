@@ -5,11 +5,11 @@ import { createSchool, type CreateSchoolState } from "../actions";
 import { SchoolDetailsFields } from "../_components/school-details-fields";
 import { Button, ButtonLink, Card, CardHeader, Field, FormMessage, ariaFor, inputClass } from "@/components/ui";
 
-type Props = { timeZones: { value: string; label: string }[] };
+type Props = { timeZones: { value: string; label: string }[]; defaultTimezone?: string };
 
-export function CreateSchoolForm({ timeZones }: Props) {
+export function CreateSchoolForm({ timeZones, defaultTimezone }: Props) {
   const [state, action, pending] = useActionState<CreateSchoolState, FormData>(createSchool, undefined);
-  const v = state?.values ?? {};
+  const v = state?.values ?? (defaultTimezone ? { timezone: defaultTimezone } : {});
   const err = (k: string) => state?.fieldErrors?.[k]?.[0];
   const [createAdmin, setCreateAdmin] = useState(v.createAdmin === undefined ? true : Boolean(v.createAdmin));
 
@@ -19,7 +19,7 @@ export function CreateSchoolForm({ timeZones }: Props) {
       <SchoolDetailsFields values={v} errors={err} timeZones={timeZones} autoSlug />
 
       <Card>
-        <CardHeader title="First School Admin" />
+        <CardHeader title="First School Admin" icon="userCheck" />
         <div className="space-y-4 p-5">
           <label className="flex items-start gap-3 text-sm text-slate-700">
             <input

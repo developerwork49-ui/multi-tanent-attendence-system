@@ -41,7 +41,7 @@ export function AssignPlanForm({
         {state?.ok && <FormMessage state={state} />}
         {plans.length === 0 ? (
           <p className="text-sm text-slate-500">
-            No plans available. <Link href="/super-admin/plans/new" className="text-blue-700 hover:underline">Create a plan</Link> first.
+            No plans available. <Link href="/super-admin/plans/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Create a plan</Link> first.
           </p>
         ) : (
           <Button type="button" variant={hasCurrent ? "secondary" : "primary"} onClick={() => setOpen(true)}>

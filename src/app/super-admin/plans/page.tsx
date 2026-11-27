@@ -7,7 +7,7 @@ import { formatBytes, formatMoney } from "@/lib/format";
 import { PERIOD_LABEL } from "@/lib/billing";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { ActionButton } from "@/components/action-button";
-import { Alert, Badge, ButtonLink, Card, EmptyState, PageHeader, td, th } from "@/components/ui";
+import { Alert, Badge, ButtonLink, Card, EmptyState, PageHeader, td, th, theadRow } from "@/components/ui";
 import { setPlanActive } from "../billing/actions";
 
 export const metadata: Metadata = { title: "Plans" };
@@ -44,7 +44,7 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
         {plans.length === 0 ? (
           <EmptyState>
             No plans yet.{" "}
-            <Link href="/super-admin/plans/new" className="text-blue-700 hover:underline">
+            <Link href="/super-admin/plans/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">
               Create the first plan
             </Link>{" "}
             so you can put schools on a subscription.
@@ -52,8 +52,8 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
+              <thead>
+                <tr className={theadRow}>
                   <th scope="col" className={th}>Plan</th>
                   <th scope="col" className={th}>Storage</th>
                   <th scope="col" className={th}>Price</th>
@@ -66,7 +66,7 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
                 {plans.map((p) => (
                   <tr key={p.id}>
                     <td className={td}>
-                      <Link href={`/super-admin/plans/${p.id}`} className="font-medium text-slate-900 hover:underline">
+                      <Link href={`/super-admin/plans/${p.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">
                         {p.name}
                       </Link>
                       {p.description && <div className="max-w-xs truncate text-xs text-slate-500">{p.description}</div>}
@@ -79,7 +79,7 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
                     <td className={td}>{p.isActive ? <Badge tone="green">Available</Badge> : <Badge>Retired</Badge>}</td>
                     <td className={td}>
                       <div className="flex flex-wrap items-center gap-3">
-                        <Link href={`/super-admin/plans/${p.id}`} className="text-sm text-blue-700 hover:underline">
+                        <Link href={`/super-admin/plans/${p.id}`} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">
                           Edit
                         </Link>
                         <ActionButton

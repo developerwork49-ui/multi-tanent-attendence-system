@@ -5,7 +5,7 @@ import { requireSchoolAdmin } from "@/lib/auth/dal";
 import { schoolDb } from "@/lib/db";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { ActionButton } from "@/components/action-button";
-import { Badge, Card, CardHeader, EmptyState, PageHeader, td, th } from "@/components/ui";
+import { Badge, Card, CardHeader, EmptyState, PageHeader, td, th, theadRow } from "@/components/ui";
 import { AddClassForm, EditClassRow } from "./class-forms";
 import { deleteClass, setClassActive } from "./actions";
 
@@ -45,8 +45,8 @@ async function Content() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
+              <thead>
+                <tr className={theadRow}>
                   <th scope="col" className={th}>Class</th>
                   <th scope="col" className={`${th} text-right`}>Active students</th>
                   <th scope="col" className={th}>Order</th>
@@ -57,7 +57,7 @@ async function Content() {
                 {classes.map((c) => (
                   <tr key={c.id}>
                     <td className={td}>
-                      <Link href={`/school/students?class=${c.id}`} className="font-medium text-slate-900 hover:underline">{c.name}</Link>
+                      <Link href={`/school/students?class=${c.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">{c.name}</Link>
                       {!c.isActive && <span className="ml-2"><Badge>Hidden</Badge></span>}
                     </td>
                     <td className={`${td} text-right tabular-nums`}>{c._count.students}</td>

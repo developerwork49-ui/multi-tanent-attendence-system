@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { scanQr } from "./actions";
 import type { ScanResult, ScannedStudent } from "./types";
-import { Button, inputClass } from "@/components/ui";
+import { motion } from "framer-motion";
+import { Alert, Button, inputClass } from "@/components/ui";
+import { icons } from "@/components/icons";
 import { initials } from "@/lib/students";
 
 type Shown = ScanResult | { kind: "network" };
@@ -192,21 +194,45 @@ export function Scanner({ initialCount, schoolTimeZone }: { initialCount: number
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
       <div className="space-y-4 lg:col-span-3">
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-900">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-[#030605] shadow-card ring-1 ring-[rgb(255_255_255/0.08)]">
           <video ref={videoRef} muted playsInline className={`h-full w-full object-cover ${camera === "on" ? "" : "invisible"}`} />
           <canvas ref={canvasRef} className="hidden" />
           {camera === "on" ? (
-            <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <div className={`aspect-square w-3/5 max-w-72 rounded-2xl border-4 ${checking ? "border-amber-300" : "border-white/80"} shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]`} />
+            <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_center,transparent_34%,rgb(0_0_0/0.55)_75%)]">
+              <div className="relative aspect-square w-3/5 max-w-72">
+                {/* gold corner brackets */}
+                {["left-0 top-0 border-l-4 border-t-4 rounded-tl-2xl", "right-0 top-0 border-r-4 border-t-4 rounded-tr-2xl", "bottom-0 left-0 border-b-4 border-l-4 rounded-bl-2xl", "bottom-0 right-0 border-b-4 border-r-4 rounded-br-2xl"].map((c) => (
+                  <span key={c} className={`absolute h-10 w-10 ${c} ${checking ? "border-amber-400" : "border-[#e5c07b]"} drop-shadow-[0_0_8px_rgb(229_192_123/0.8)]`} />
+                ))}
+                <motion.span
+                  className="absolute inset-x-3 h-0.5 rounded-full bg-gradient-to-r from-transparent via-[#f6e2ad] to-transparent shadow-[0_0_14px_2px_rgb(229_192_123/0.7)]"
+                  initial={{ top: "8%" }}
+                  animate={{ top: ["8%", "92%", "8%"] }}
+                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
             </div>
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center text-slate-200">
-              <p className="text-sm">{camera === "starting" ? "Starting camera…" : "Point the camera at a student’s QR card."}</p>
-              {camera === "off" && <Button type="button" onClick={() => start()}>Start camera</Button>}
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[radial-gradient(circle_at_50%_40%,rgb(229_192_123/0.12),transparent_60%)] p-6 text-center">
+              <motion.span
+                className="bg-metal-gold flex h-16 w-16 items-center justify-center rounded-2xl text-canvas shadow-gold"
+                animate={{ scale: [1, 1.06, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <icons.scan width={30} height={30} strokeWidth={2.2} />
+              </motion.span>
+              <p className="max-w-xs text-sm font-medium text-slate-500">
+                {camera === "starting" ? "Starting camera…" : "Point the camera at a student’s QR card."}
+              </p>
+              {camera === "off" && (
+                <Button type="button" onClick={() => start()}>
+                  Start camera
+                </Button>
+              )}
             </div>
           )}
         </div>
-        {cameraError && <p role="alert" className="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-600/20">{cameraError}</p>}
+        {cameraError && <Alert tone="warning">{cameraError}</Alert>}
         {camera === "on" && (
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="secondary" onClick={stop}>Stop camera</Button>
@@ -241,20 +267,40 @@ export function Scanner({ initialCount, schoolTimeZone }: { initialCount: number
       </div>
 
       <div className="space-y-4 lg:col-span-2">
-        <div className="flex items-center justify-between rounded-xl bg-white px-5 py-4 shadow-sm ring-1 ring-slate-200">
-          <span className="text-sm text-slate-600">Present today</span>
-          <span className="text-3xl font-semibold tabular-nums text-slate-900" aria-live="polite">{count}</span>
+        <div className="glass relative flex items-center justify-between overflow-hidden rounded-3xl px-6 py-5">
+          <span aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-[rgb(52_211_153/0.18)] blur-3xl" />
+          <span className="relative flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-canvas shadow-mint-glow">
+              <icons.userCheck width={19} height={19} strokeWidth={2.1} />
+            </span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Present today</span>
+          </span>
+          <motion.span
+            key={count}
+            initial={{ scale: 1.35, opacity: 0.4 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 380, damping: 18 }}
+            className="text-headline relative text-5xl font-black tabular-nums"
+            aria-live="polite"
+          >
+            {count}
+          </motion.span>
         </div>
-        <div aria-live="assertive">{result ? <ResultPanel r={result} /> : <ResultPlaceholder />}</div>
+        <div aria-live="assertive">{result ? <ResultPanel key={history[0]?.id ?? 0} r={result} /> : <ResultPlaceholder />}</div>
         {history.length > 0 && (
-          <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-200">
-            <h2 className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-900">This session</h2>
+          <div className="glass overflow-hidden rounded-3xl">
+            <h2 className="border-b border-line px-5 py-3.5 text-[15px] font-extrabold tracking-tight text-slate-900">This session</h2>
             <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto text-sm">
               {history.map((h) => (
-                <li key={h.id} className="flex items-center justify-between gap-3 px-5 py-2">
-                  <span className="truncate">{"student" in h.result ? h.result.student.fullName : LABEL[h.result.kind].title}</span>
-                  <span className={`shrink-0 text-xs font-medium ${LABEL[h.result.kind].text}`}>{LABEL[h.result.kind].short} · {h.at}</span>
-                </li>
+                <motion.li
+                  key={h.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center justify-between gap-3 px-5 py-2.5"
+                >
+                  <span className="truncate font-semibold text-slate-800">{"student" in h.result ? h.result.student.fullName : LABEL[h.result.kind].title}</span>
+                  <span className={`shrink-0 text-xs font-bold ${LABEL[h.result.kind].text}`}>{LABEL[h.result.kind].short} · {h.at}</span>
+                </motion.li>
               ))}
             </ul>
           </div>
@@ -265,12 +311,12 @@ export function Scanner({ initialCount, schoolTimeZone }: { initialCount: number
 }
 
 const LABEL: Record<Shown["kind"], { title: string; short: string; box: string; text: string }> = {
-  ok: { title: "Marked present", short: "Present", box: "bg-emerald-50 ring-emerald-500", text: "text-emerald-700" },
-  duplicate: { title: "Already marked today", short: "Already", box: "bg-amber-50 ring-amber-500", text: "text-amber-700" },
-  inactive: { title: "Student is inactive", short: "Inactive", box: "bg-red-50 ring-red-500", text: "text-red-700" },
-  unknown: { title: "Card not recognised", short: "Unknown card", box: "bg-red-50 ring-red-500", text: "text-red-700" },
-  invalid: { title: "Not a student card", short: "Not a card", box: "bg-red-50 ring-red-500", text: "text-red-700" },
-  network: { title: "No connection", short: "Not saved", box: "bg-red-50 ring-red-500", text: "text-red-700" },
+  ok: { title: "Marked present", short: "Present", box: "bg-emerald-50 ring-emerald-400 shadow-[0_0_48px_-12px_rgb(52_211_153/0.75)]", text: "text-emerald-700" },
+  duplicate: { title: "Already marked today", short: "Already", box: "bg-amber-50 ring-amber-400 shadow-[0_0_48px_-12px_rgb(251_146_60/0.7)]", text: "text-amber-700" },
+  inactive: { title: "Student is inactive", short: "Inactive", box: "bg-red-50 ring-red-400 shadow-[0_0_48px_-12px_rgb(248_113_113/0.7)]", text: "text-red-700" },
+  unknown: { title: "Card not recognised", short: "Unknown card", box: "bg-red-50 ring-red-400 shadow-[0_0_48px_-12px_rgb(248_113_113/0.7)]", text: "text-red-700" },
+  invalid: { title: "Not a student card", short: "Not a card", box: "bg-red-50 ring-red-400 shadow-[0_0_48px_-12px_rgb(248_113_113/0.7)]", text: "text-red-700" },
+  network: { title: "No connection", short: "Not saved", box: "bg-red-50 ring-red-400 shadow-[0_0_48px_-12px_rgb(248_113_113/0.7)]", text: "text-red-700" },
 };
 
 const HELP: Record<Shown["kind"], string> = {
@@ -286,8 +332,13 @@ function ResultPanel({ r }: { r: Shown }) {
   const l = LABEL[r.kind];
   const s: ScannedStudent | null = "student" in r ? r.student : null;
   return (
-    <div className={`rounded-xl p-5 ring-2 ${l.box}`}>
-      <p className={`text-lg font-semibold ${l.text}`}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.94, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 360, damping: 22 }}
+      className={`rounded-3xl p-5 ring-2 backdrop-blur-md ${l.box}`}
+    >
+      <p className={`text-xl font-black tracking-tight ${l.text}`}>
         {l.title}
         {"time" in r && r.kind === "duplicate" && ` at ${r.time}`}
         {"time" in r && r.kind === "ok" && ` · ${r.time}`}
@@ -296,14 +347,14 @@ function ResultPanel({ r }: { r: Shown }) {
         <div className="mt-3 flex items-center gap-4">
           {s.photoKey ? (
             // eslint-disable-next-line @next/next/no-img-element -- private, session-protected image
-            <img src={`/school/students/${s.id}/photo?v=${encodeURIComponent(s.photoKey)}`} alt="" className="h-20 w-20 rounded-xl object-cover" />
+            <img src={`/school/students/${s.id}/photo?v=${encodeURIComponent(s.photoKey)}`} alt="" className="h-20 w-20 rounded-2xl object-cover ring-2 ring-[rgb(255_255_255/0.15)]" />
           ) : (
-            <span aria-hidden className="flex h-20 w-20 items-center justify-center rounded-xl bg-white/70 text-2xl font-semibold text-slate-600">
+            <span aria-hidden className="flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-100 text-2xl font-black text-blue-700 ring-1 ring-blue-300/60">
               {initials(s.fullName)}
             </span>
           )}
           <div className="min-w-0">
-            <p className="truncate text-xl font-semibold text-slate-900">{s.fullName}</p>
+            <p className="truncate text-2xl font-black tracking-tight text-slate-900">{s.fullName}</p>
             <p className="text-sm text-slate-600">
               {s.studentCode}
               {s.className && ` · ${s.className}`}
@@ -314,13 +365,14 @@ function ResultPanel({ r }: { r: Shown }) {
         <p className="mt-2 text-sm text-slate-700">{HELP[r.kind]}</p>
       )}
       {s && HELP[r.kind] && <p className="mt-3 text-sm text-slate-700">{HELP[r.kind]}</p>}
-    </div>
+    </motion.div>
   );
 }
 
 function ResultPlaceholder() {
   return (
-    <div className="rounded-xl border-2 border-dashed border-slate-200 p-8 text-center text-sm text-slate-500">
+    <div className="flex flex-col items-center gap-3 rounded-3xl border-2 border-dashed border-slate-200 p-8 text-center text-sm text-slate-500">
+      <icons.scan width={26} height={26} className="text-blue-500" />
       The result of each scan appears here.
     </div>
   );

@@ -46,7 +46,7 @@ export function EditClassRow({ id, name, sortOrder }: { id: number; name: string
   }
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="text-sm text-blue-700 hover:underline">
+      <button type="button" onClick={() => setOpen(true)} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">
         Rename
       </button>
     );

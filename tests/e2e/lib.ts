@@ -264,10 +264,12 @@ export async function cleanup() {
         `DELETE FROM audit_logs WHERE school_id IN ${schools} OR actor_user_id IN ${users}
            OR (entity_type = 'user' AND entity_id IN (SELECT id::text FROM users WHERE email LIKE '%@${EMAIL_DOMAIN}'))
            OR (entity_type = 'plan' AND entity_id IN (SELECT id::text FROM plans WHERE name LIKE '${PLAN_PREFIX}%'))
-           OR details->>'email' LIKE '%@${EMAIL_DOMAIN}'`,
+           OR details->>'email' LIKE '%@${EMAIL_DOMAIN}'
+           OR (entity_type = 'notification' AND entity_id IN (SELECT id::text FROM notifications WHERE created_by_id IN ${users}))`,
       );
       await tx.$executeRawUnsafe(`ALTER TABLE audit_logs FORCE ROW LEVEL SECURITY`);
-      for (const t of ["attendance", "student_photos", "students", "class_groups", "payments", "subscriptions"]) {
+      await tx.$executeRawUnsafe(`DELETE FROM notifications WHERE school_id IN ${schools} OR created_by_id IN ${users}`);
+      for (const t of ["notification_reads", "attendance", "student_photos", "students", "class_groups", "payments", "subscriptions"]) {
         const exists = await tx.$queryRawUnsafe<{ e: boolean }[]>(`SELECT to_regclass('${t}') IS NOT NULL AS e`);
         if (exists[0].e) await tx.$executeRawUnsafe(`DELETE FROM ${t} WHERE school_id IN ${schools}`);
       }

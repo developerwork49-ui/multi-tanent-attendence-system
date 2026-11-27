@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "preview": "next build && next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
@@ -15,12 +16,14 @@
     "db:test": "bash -c 'set -a && . ./.env && psql \"${DATABASE_URL%%\\?*}\" -X -f db/tests/constraints.sql'",
     "db:deploy": "prisma migrate deploy",
     "create-super-admin": "tsx scripts/create-super-admin.ts",
+    "reset-password": "tsx scripts/reset-password.ts",
     "test:e2e": "tsx scripts/run-e2e.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "dotenv": "^18.0.10",
+    "framer-motion": "14.14.0",
     "jsqr": "1.4.0",
     "next": "16.4.6",
     "pg": "^8.23.1",

@@ -10,7 +10,7 @@ import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { ActionButton } from "@/components/action-button";
 import { StorageMeter } from "@/components/billing-ui";
-import { Badge, Card, EmptyState, PageHeader, Stat, formatDateTime, td, th } from "@/components/ui";
+import { Badge, Card, EmptyState, formatDateTime, PageHeader, Stat, td, th, theadRow, StatGrid } from "@/components/ui";
 import { recalculateAllStorage } from "./actions";
 
 export const metadata: Metadata = { title: "Storage" };
@@ -63,23 +63,24 @@ async function Content() {
     <>
       <PageHeader
         title="Storage"
-        description="Space used by each school compared with its quota. Numbers update when schools add data, or when you measure now."
+        eyebrow="Platform"
+        description="Space used by each school against its quota."
         actions={<ActionButton action={recalculateAllStorage} fields={{}} label="Measure all now" pendingLabel="Measuring…" variant="primary" />}
       />
-      <dl className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="Total used" value={formatBytes(used)} />
-        <Stat label="Schools near limit (80%+)" value={warn} />
-        <Stat label="Schools full" value={full} />
-        <Stat label="Oldest measurement" value={<span className="text-base">{oldest ? formatDateTime(oldest, PLATFORM_TIME_ZONE) : "—"}</span>} />
-      </dl>
+      <StatGrid className="mb-6 grid-cols-2 lg:grid-cols-4">
+        <Stat label="Total used" value={formatBytes(used)} icon="storage" tone="gold" />
+        <Stat label="Near limit (80%+)" value={warn} icon="warning" tone={warn ? "amber" : "slate"} />
+        <Stat label="Schools full" value={full} icon="error" tone={full ? "red" : "slate"} />
+        <Stat label="Last measured" value={<span className="text-lg font-extrabold">{oldest ? formatDateTime(oldest, PLATFORM_TIME_ZONE) : "—"}</span>} icon="clock" tone="slate" />
+      </StatGrid>
       <Card>
         {rows.length === 0 ? (
           <EmptyState>No schools yet.</EmptyState>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
+              <thead>
+                <tr className={theadRow}>
                   <th scope="col" className={th}>School</th>
                   <th scope="col" className={`${th} w-72`}>Usage</th>
                   <th scope="col" className={th}>Quota from</th>
@@ -90,7 +91,7 @@ async function Content() {
                 {rows.map((r) => (
                   <tr key={r.id}>
                     <td className={td}>
-                      <Link href={`/super-admin/schools/${r.id}`} className="font-medium text-slate-900 hover:underline">{r.name}</Link>
+                      <Link href={`/super-admin/schools/${r.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">{r.name}</Link>
                       {r.status.level === "full" && <span className="ml-2"><Badge tone="red">Full</Badge></span>}
                       {r.status.level === "warning" && <span className="ml-2"><Badge tone="amber">Near limit</Badge></span>}
                     </td>

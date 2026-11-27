@@ -39,7 +39,7 @@ export function StudentForm({ studentId, initial, classes }: Props) {
           </select>
           {classes.length === 0 && (
             <p className="mt-1 text-xs text-slate-500">
-              No classes yet — <Link href="/school/classes" className="text-blue-700 hover:underline">add classes</Link>.
+              No classes yet — <Link href="/school/classes" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">add classes</Link>.
             </p>
           )}
         </Field>

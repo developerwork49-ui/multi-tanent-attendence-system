@@ -27,7 +27,7 @@ export function SchoolDetailsFields({
 
   return (
     <Card>
-      <CardHeader title="School details" />
+      <CardHeader title="School details" icon="school" />
       <div className="grid gap-4 p-5 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <Field label="School name" htmlFor="name" required error={errors("name")}>

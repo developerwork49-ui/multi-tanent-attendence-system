@@ -1,25 +1,45 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { requireSchoolAdmin } from "@/lib/auth/dal";
-import { AppHeader, AppHeaderSkeleton } from "@/components/app-header";
-import { SchoolNav, SchoolNavFallback } from "./_components/nav";
+import { unreadCount } from "@/lib/notifications";
+import { getPlatformSettings } from "@/lib/settings";
+import { AppShell, UserMenu, UserMenuSkeleton } from "@/components/app-shell";
+import { SideNav, SideNavFallback } from "@/components/side-nav";
+import { SCHOOL_NAV } from "./_components/nav";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { platformName } = await getPlatformSettings();
+  return { title: { default: platformName, template: `%s · ${platformName}` } };
+}
 
 export default function SchoolLayout({ children }: LayoutProps<"/school">) {
   return (
-    <div className="flex flex-1 flex-col bg-slate-50">
-      <div className="print:hidden">
-        <Suspense fallback={<AppHeaderSkeleton />}>
-          <Header />
+    <AppShell
+      panelLabel="School Admin"
+      nav={
+        <Suspense fallback={<SideNavFallback items={SCHOOL_NAV} label="School" />}>
+          <Nav />
         </Suspense>
-      </div>
-      <Suspense fallback={<SchoolNavFallback />}>
-        <SchoolNav />
-      </Suspense>
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 print:max-w-none print:p-0">{children}</main>
-    </div>
+      }
+      user={
+        <Suspense fallback={<UserMenuSkeleton />}>
+          <User />
+        </Suspense>
+      }
+    >
+      {children}
+    </AppShell>
   );
 }
 
-async function Header() {
+/** Menu with the unread-notifications badge. */
+async function Nav() {
   const user = await requireSchoolAdmin();
-  return <AppHeader panelName={user.school.name} userName={user.fullName} accountHref="/school/account" subtitle="School Admin" />;
+  const unread = await unreadCount(user);
+  return <SideNav items={SCHOOL_NAV} label="School" badges={{ "/school/notifications": unread }} />;
+}
+
+async function User() {
+  const user = await requireSchoolAdmin();
+  return <UserMenu user={{ name: user.fullName, subtitle: user.school.name, accountHref: "/school/account" }} />;
 }

@@ -1,27 +1,37 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { requireSuperAdmin } from "@/lib/auth/dal";
-import { AppHeader, AppHeaderSkeleton } from "@/components/app-header";
-import { SuperAdminNav, SuperAdminNavFallback } from "./_components/nav";
+import { getPlatformSettings } from "@/lib/settings";
+import { AppShell, UserMenu, UserMenuSkeleton } from "@/components/app-shell";
+import { SideNav, SideNavFallback } from "@/components/side-nav";
+import { SUPER_ADMIN_NAV } from "./_components/nav";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { platformName } = await getPlatformSettings();
+  return { title: { default: platformName, template: `%s · ${platformName}` } };
+}
 
 export default function SuperAdminLayout({ children }: LayoutProps<"/super-admin">) {
   return (
-    <div className="flex flex-1 flex-col bg-slate-50">
-      <Suspense fallback={<AppHeaderSkeleton />}>
-        <Header />
-      </Suspense>
-      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-6 md:flex-row">
-        <aside className="md:w-48 md:shrink-0">
-          <Suspense fallback={<SuperAdminNavFallback />}>
-            <SuperAdminNav />
-          </Suspense>
-        </aside>
-        <main className="min-w-0 flex-1">{children}</main>
-      </div>
-    </div>
+    <AppShell
+      panelLabel="Super Admin"
+      nav={
+        <Suspense fallback={<SideNavFallback items={SUPER_ADMIN_NAV} label="Super Admin" />}>
+          <SideNav items={SUPER_ADMIN_NAV} label="Super Admin" />
+        </Suspense>
+      }
+      user={
+        <Suspense fallback={<UserMenuSkeleton />}>
+          <User />
+        </Suspense>
+      }
+    >
+      {children}
+    </AppShell>
   );
 }
 
-async function Header() {
+async function User() {
   const user = await requireSuperAdmin();
-  return <AppHeader panelName="Super Admin" userName={user.fullName} accountHref="/super-admin/account" subtitle="Platform management" />;
+  return <UserMenu user={{ name: user.fullName, subtitle: "Platform owner", accountHref: "/super-admin/account" }} />;
 }

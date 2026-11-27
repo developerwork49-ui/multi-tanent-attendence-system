@@ -62,7 +62,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
         description={<Crumbs items={[["Students", "/school/students"], [s.fullName]]} />}
         actions={
           <>
-            {s.status === "ACTIVE" ? <Badge tone="green">Active</Badge> : <Badge>Inactive</Badge>}
+            {s.status === "ACTIVE" ? <Badge tone="green" dot>Active</Badge> : <Badge dot>Inactive</Badge>}
             <ButtonLink href={`/school/students/${s.id}/card`} variant="secondary">View card</ButtonLink>
           </>
         }
@@ -81,7 +81,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <Card>
-            <CardHeader title="Details" />
+            <CardHeader title="Details" icon="info" />
             <div className="p-5">
               <StudentForm
                 key={s.updatedAt.toISOString()}
@@ -93,19 +93,19 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="Attendance" />
+            <CardHeader title="Attendance" icon="register" />
             <dl className="grid grid-cols-3 gap-4 border-b border-slate-100 p-5">
               <div>
-                <dt className="text-xs text-slate-500">Present this month</dt>
-                <dd className="text-xl font-semibold tabular-nums">{monthPresent}</dd>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Present this month</dt>
+                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{monthPresent}</dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Present (all time)</dt>
-                <dd className="text-xl font-semibold tabular-nums">{count("PRESENT")}</dd>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Present (all time)</dt>
+                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{count("PRESENT")}</dd>
               </div>
               <div>
-                <dt className="text-xs text-slate-500">Marked absent</dt>
-                <dd className="text-xl font-semibold tabular-nums">{count("ABSENT")}</dd>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Marked absent</dt>
+                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{count("ABSENT")}</dd>
               </div>
             </dl>
             {recent.length === 0 ? (
@@ -128,7 +128,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
 
         <div className="space-y-6">
           <Card>
-            <CardHeader title="Photo" />
+            <CardHeader title="Photo" icon="students" />
             <div className="flex items-center gap-4 p-5">
               <StudentPhoto student={s} size={96} />
               <div className="space-y-2">
@@ -139,7 +139,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="QR card" />
+            <CardHeader title="QR card" icon="scan" />
             <div className="space-y-3 p-5 text-sm text-slate-600">
               <p>Issued {formatDate(s.qrIssuedAt, tz)}. If a card is lost, issue a new code: the old card stops working at once.</p>
               <div className="flex flex-wrap gap-2">
@@ -150,7 +150,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="Status" />
+            <CardHeader title="Status" icon="pulse" />
             <div className="space-y-3 p-5 text-sm text-slate-600">
               {s.status === "ACTIVE" ? (
                 <>
