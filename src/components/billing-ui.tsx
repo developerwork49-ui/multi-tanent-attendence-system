@@ -1,8 +1,7 @@
 import type { SubscriptionStatus } from "@/generated/prisma/client";
 import { effectiveStatus, daysLeft } from "@/lib/billing";
 import { formatBytes } from "@/lib/format";
-import { Badge } from "@/components/ui";
-import { Meter } from "@/components/motion/motion-ui";
+import { Badge, Meter } from "@/components/ui";
 import type { StorageStatus } from "@/lib/storage";
 
 /** Subscription status, treating overdue ones as expired. */
@@ -23,15 +22,15 @@ export function StorageMeter({ status, compact }: { status: StorageStatus; compa
   return (
     <div className="space-y-2">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="text-sm font-medium text-slate-500">
-          <span className="text-lg font-extrabold tracking-tight text-slate-900">{formatBytes(status.total)}</span> of{" "}
+        <span className="text-sm font-medium text-zinc-500">
+          <span className="text-lg font-semibold tracking-tight text-zinc-900">{formatBytes(status.total)}</span> of{" "}
           {status.quota.limit === null ? "—" : formatBytes(status.quota.limit)}
         </span>
-        {status.percent !== null && <span className="text-sm font-extrabold tabular-nums text-slate-700">{status.percent}%</span>}
+        {status.percent !== null && <span className="text-sm font-semibold tabular-nums text-zinc-700">{status.percent}%</span>}
       </div>
       <Meter percent={pct} tone={status.level === "full" ? "full" : status.level === "warning" ? "warning" : "ok"} label="Storage used" />
       {!compact && (
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-zinc-500">
           Students {formatBytes(status.students)} · Attendance {formatBytes(status.attendance)} · Photos {formatBytes(status.photos)}
           {status.quota.source === "custom" && " · custom quota"}
         </p>

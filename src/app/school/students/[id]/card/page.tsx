@@ -52,7 +52,7 @@ async function Content({ params }: PageProps<"/school/students/[id]/card">) {
           <StudentCard s={card} schoolName={user.school.name} />
         </div>
       </div>
-      <p className="mt-10 text-center text-xs text-slate-500 print:hidden">
+      <p className="mt-10 text-center text-xs text-zinc-500 print:hidden">
         Tip: print at 100% scale (“Actual size”) so the card is exactly ID-card size.
       </p>
     </>

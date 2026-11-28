@@ -216,16 +216,16 @@ export const icons = {
 
 export type IconName = keyof typeof icons;
 
-/** The app mark: a check in a metallic gold tile (also the favicon). Pure CSS fill, so any number can share a page. */
+/** The app mark: a white check on a black tile (also the favicon). */
 export function LogoMark({ size = 34 }: { size?: number }) {
   return (
     <span
       aria-hidden
-      className="bg-metal-gold inline-flex shrink-0 items-center justify-center shadow-gold"
-      style={{ width: size, height: size, borderRadius: size * 0.27 }}
+      className="inline-flex shrink-0 items-center justify-center bg-zinc-900"
+      style={{ width: size, height: size, borderRadius: size * 0.22 }}
     >
       <svg viewBox="0 0 64 64" width={size * 0.72} height={size * 0.72}>
-        <path d="M14 33.5 27 45.5l23-26" fill="none" stroke="#070b0a" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M14 33.5 27 45.5l23-26" fill="none" stroke="#fff" strokeWidth="7.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </span>
   );

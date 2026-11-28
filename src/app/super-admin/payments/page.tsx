@@ -11,7 +11,7 @@ import { dateOnlyToDb, dbToDateOnly, isMonth, monthLabel, shiftMonth, todayInZon
 import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import type { Prisma } from "@/generated/prisma/client";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { Button, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, Stat, subtleLink, td, th, theadRow, StatGrid } from "@/components/ui";
+import { Button, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, Stat, subtleLink, td, th, theadRow, StatGrid, inputBase } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Payments" };
 
@@ -62,12 +62,12 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
 
   return (
     <div className="space-y-4">
-      <StatGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <StatGrid cols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {totals.length === 0 ? (
-          <Stat label="Total received" value="—" icon="wallet" />
+          <Stat label="Total received" value="—" />
         ) : (
           totals.map((t) => (
-            <Stat key={t.currency} label={`Received · ${t.currency}`} value={formatMoney(t._sum.amountMinor ?? 0, t.currency)} hint={`${t._count._all} payments`} icon="wallet" tone="gold" />
+            <Stat key={t.currency} label={`Received · ${t.currency}`} value={formatMoney(t._sum.amountMinor ?? 0, t.currency)} hint={`${t._count._all} payments`} />
           ))
         )}
       </StatGrid>
@@ -75,7 +75,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
         <form className={filterBar}>
           <div>
             <label htmlFor="school" className="sr-only">School</label>
-            <select id="school" name="school" defaultValue={schoolId ?? ""} className={`${inputClass} mt-0 w-auto max-w-64`}>
+            <select id="school" name="school" defaultValue={schoolId ?? ""} className={`${inputBase} w-auto max-w-64`}>
               <option value="">All schools</option>
               {schools.map((s) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -84,7 +84,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
           </div>
           <div>
             <label htmlFor="month" className="sr-only">Month</label>
-            <select id="month" name="month" defaultValue={month} className={`${inputClass} mt-0 w-auto`}>
+            <select id="month" name="month" defaultValue={month} className={`${inputBase} w-auto`}>
               <option value="">Any month</option>
               {months.map((mm) => (
                 <option key={mm} value={mm}>{monthLabel(mm)}</option>
@@ -111,17 +111,17 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/pa
                   <th scope="col" className={th}>Recorded by</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {payments.map((p) => (
                   <tr key={p.id}>
                     <td className={`${td} whitespace-nowrap`}>{dbToDateOnly(p.paidOn)}</td>
                     <td className={td}>
-                      <Link href={`/super-admin/schools/${p.school.id}`} className="text-slate-900 hover:underline">{p.school.name}</Link>
+                      <Link href={`/super-admin/schools/${p.school.id}`} className="text-zinc-900 hover:underline">{p.school.name}</Link>
                     </td>
                     <td className={`${td} whitespace-nowrap text-right font-medium tabular-nums`}>{formatMoney(p.amountMinor, p.currency)}</td>
                     <td className={td}>{PAYMENT_METHOD_LABEL[p.method]}</td>
-                    <td className={`${td} text-slate-600`}>{p.reference ?? "—"}</td>
-                    <td className={`${td} text-slate-600`}>{p.recordedBy?.fullName ?? "—"}</td>
+                    <td className={`${td} text-zinc-600`}>{p.reference ?? "—"}</td>
+                    <td className={`${td} text-zinc-600`}>{p.recordedBy?.fullName ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>

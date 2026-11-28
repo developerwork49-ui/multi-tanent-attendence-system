@@ -40,8 +40,8 @@ export function AssignPlanForm({
       <div className="space-y-3">
         {state?.ok && <FormMessage state={state} />}
         {plans.length === 0 ? (
-          <p className="text-sm text-slate-500">
-            No plans available. <Link href="/super-admin/plans/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Create a plan</Link> first.
+          <p className="text-sm text-zinc-500">
+            No plans available. <Link href="/super-admin/plans/new" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">Create a plan</Link> first.
           </p>
         ) : (
           <Button type="button" variant={hasCurrent ? "secondary" : "primary"} onClick={() => setOpen(true)}>
@@ -165,8 +165,8 @@ export function RecordPaymentForm({
         </div>
       </div>
       {hasCurrent && (
-        <label className="flex items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" name="extend" value="1" defaultChecked className="h-4 w-4 rounded border-slate-300" />
+        <label className="flex items-center gap-2 text-sm text-zinc-700">
+          <input type="checkbox" name="extend" value="1" defaultChecked className="h-4 w-4 rounded border-zinc-300" />
           Also extend the current subscription by one billing period
         </label>
       )}

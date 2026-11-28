@@ -81,7 +81,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <Card>
-            <CardHeader title="Details" icon="info" />
+            <CardHeader title="Details" />
             <div className="p-5">
               <StudentForm
                 key={s.updatedAt.toISOString()}
@@ -93,29 +93,29 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="Attendance" icon="register" />
-            <dl className="grid grid-cols-3 gap-4 border-b border-slate-100 p-5">
+            <CardHeader title="Attendance" />
+            <dl className="grid grid-cols-3 gap-4 border-b border-zinc-100 p-5">
               <div>
-                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Present this month</dt>
-                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{monthPresent}</dd>
+                <dt className="text-xs font-medium text-zinc-500">Present this month</dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight tabular-nums text-zinc-900">{monthPresent}</dd>
               </div>
               <div>
-                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Present (all time)</dt>
-                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{count("PRESENT")}</dd>
+                <dt className="text-xs font-medium text-zinc-500">Present (all time)</dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight tabular-nums text-zinc-900">{count("PRESENT")}</dd>
               </div>
               <div>
-                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Marked absent</dt>
-                <dd className="mt-1 text-3xl font-black tracking-tight tabular-nums text-slate-900">{count("ABSENT")}</dd>
+                <dt className="text-xs font-medium text-zinc-500">Marked absent</dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight tabular-nums text-zinc-900">{count("ABSENT")}</dd>
               </div>
             </dl>
             {recent.length === 0 ? (
-              <p className="px-5 py-6 text-sm text-slate-500">No attendance recorded yet.</p>
+              <p className="px-5 py-6 text-sm text-zinc-500">No attendance recorded yet.</p>
             ) : (
-              <ul className="divide-y divide-slate-100 text-sm">
+              <ul className="divide-y divide-zinc-100 text-sm">
                 {recent.map((a) => (
                   <li key={a.date.toISOString()} className="flex items-center justify-between gap-3 px-5 py-2.5">
                     <span>{dateOnlyLabel(dbToDateOnly(a.date))}</span>
-                    <span className="flex items-center gap-3 text-slate-500">
+                    <span className="flex items-center gap-3 text-zinc-500">
                       <span className="text-xs">{a.source === "QR_SCAN" ? `QR scan ${timeInZone(a.markedAt, tz)}` : "Marked by hand"}</span>
                       {a.status === "PRESENT" ? <Badge tone="green">Present</Badge> : <Badge tone="red">Absent</Badge>}
                     </span>
@@ -128,7 +128,7 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
 
         <div className="space-y-6">
           <Card>
-            <CardHeader title="Photo" icon="students" />
+            <CardHeader title="Photo" />
             <div className="flex items-center gap-4 p-5">
               <StudentPhoto student={s} size={96} />
               <div className="space-y-2">
@@ -139,8 +139,8 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="QR card" icon="scan" />
-            <div className="space-y-3 p-5 text-sm text-slate-600">
+            <CardHeader title="QR card" />
+            <div className="space-y-3 p-5 text-sm text-zinc-600">
               <p>Issued {formatDate(s.qrIssuedAt, tz)}. If a card is lost, issue a new code: the old card stops working at once.</p>
               <div className="flex flex-wrap gap-2">
                 <ButtonLink href={`/school/students/${s.id}/card`} variant="secondary">Print card</ButtonLink>
@@ -150,8 +150,8 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
           </Card>
 
           <Card>
-            <CardHeader title="Status" icon="pulse" />
-            <div className="space-y-3 p-5 text-sm text-slate-600">
+            <CardHeader title="Status" />
+            <div className="space-y-3 p-5 text-sm text-zinc-600">
               {s.status === "ACTIVE" ? (
                 <>
                   <p>Left the school? Deactivate the student. All attendance history is kept.</p>
@@ -160,9 +160,9 @@ async function Content({ params, searchParams }: PageProps<"/school/students/[id
               ) : (
                 <ActionButton action={setStudentStatus} fields={{ studentId: s.id, status: "ACTIVE" }} label="Reactivate" variant="success" />
               )}
-              <div className="border-t border-slate-100 pt-3">
+              <div className="border-t border-zinc-100 pt-3">
                 {hasHistory ? (
-                  <p className="text-xs text-slate-500">This student has attendance records, so they can only be deactivated, not deleted.</p>
+                  <p className="text-xs text-zinc-500">This student has attendance records, so they can only be deactivated, not deleted.</p>
                 ) : (
                   <ActionButton action={deleteStudent} fields={{ studentId: s.id }} label="Delete permanently" variant="danger" link confirm="Delete for good? This cannot be undone." />
                 )}

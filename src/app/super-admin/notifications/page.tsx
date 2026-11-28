@@ -50,7 +50,7 @@ async function Content() {
   return (
     <div className="grid gap-6 xl:grid-cols-5">
       <Card className="xl:col-span-2 self-start">
-        <CardHeader title="New message" icon="bell" />
+        <CardHeader title="New message" />
         <ComposeForm schools={schools} />
       </Card>
       <Card className="xl:col-span-3">
@@ -58,19 +58,19 @@ async function Content() {
         {sent.length === 0 ? (
           <EmptyState>No messages sent yet.</EmptyState>
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {sent.map((n) => {
               const audience = n.school ? (adminsPerSchool.get(n.school.id) ?? 0) : totalAdmins;
               return (
                 <li key={n.id} className="px-5 py-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="font-semibold text-slate-900">{n.title}</h3>
+                    <h3 className="font-semibold text-zinc-900">{n.title}</h3>
                     {n.tone === "IMPORTANT" && <Badge tone="red">Important</Badge>}
                     <Badge tone={n.school ? "blue" : "green"}>{n.school ? n.school.name : "All schools"}</Badge>
-                    <span className="ml-auto text-xs text-slate-500">{formatDateTime(n.createdAt, PLATFORM_TIME_ZONE)}</span>
+                    <span className="ml-auto text-xs text-zinc-500">{formatDateTime(n.createdAt, PLATFORM_TIME_ZONE)}</span>
                   </div>
-                  <p className="mt-1.5 line-clamp-3 whitespace-pre-line text-sm text-slate-700">{n.body}</p>
-                  <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+                  <p className="mt-1.5 line-clamp-3 whitespace-pre-line text-sm text-zinc-700">{n.body}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-zinc-500">
                     <span>
                       Read by {n._count.reads} of {audience} admin{audience === 1 ? "" : "s"}
                     </span>

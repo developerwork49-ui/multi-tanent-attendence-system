@@ -53,15 +53,15 @@ async function Content() {
                   <th scope="col" className={th}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {classes.map((c) => (
                   <tr key={c.id}>
                     <td className={td}>
-                      <Link href={`/school/students?class=${c.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">{c.name}</Link>
+                      <Link href={`/school/students?class=${c.id}`} className="font-medium text-zinc-900 transition-colors hover:underline underline-offset-4">{c.name}</Link>
                       {!c.isActive && <span className="ml-2"><Badge>Hidden</Badge></span>}
                     </td>
                     <td className={`${td} text-right tabular-nums`}>{c._count.students}</td>
-                    <td className={`${td} tabular-nums text-slate-600`}>{c.sortOrder}</td>
+                    <td className={`${td} tabular-nums text-zinc-600`}>{c.sortOrder}</td>
                     <td className={td}>
                       <div className="flex flex-wrap items-center gap-3">
                         <EditClassRow id={c.id} name={c.name} sortOrder={c.sortOrder} />
@@ -76,7 +76,7 @@ async function Content() {
           </div>
         )}
       </Card>
-      <p className="text-xs text-slate-500">Hidden classes can’t be chosen for new students but keep their existing students.</p>
+      <p className="text-xs text-zinc-500">Hidden classes can’t be chosen for new students but keep their existing students.</p>
     </div>
   );
 }

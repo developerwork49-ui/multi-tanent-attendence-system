@@ -5,8 +5,7 @@ import { requireSuperAdmin } from "@/lib/auth/dal";
 import { platformDb } from "@/lib/db";
 import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { Badge, ButtonLink, Card, CardHeader, EmptyState, MoreLink, PageHeader, Stat, StatGrid, StatusBadge, formatDate, formatDateTime, type Tone } from "@/components/ui";
-import { icons } from "@/components/icons";
+import { Badge, ButtonLink, Card, CardHeader, EmptyState, MoreLink, PageHeader, Stat, StatGrid, StatusBadge, formatDate, formatDateTime, linkClass, rowLink, type Tone } from "@/components/ui";
 import type { Tx } from "@/lib/db";
 import { daysLeft, isCurrent } from "@/lib/billing";
 import { formatBytes } from "@/lib/format";
@@ -99,39 +98,34 @@ async function Dashboard() {
       <PageHeader
         eyebrow={`Welcome back, ${user.fullName.split(" ")[0]}`}
         title="Dashboard"
-        actions={
-          <ButtonLink href="/super-admin/schools/new">
-            <icons.plus width={16} height={16} strokeWidth={2.4} /> New school
-          </ButtonLink>
-        }
+        actions={<ButtonLink href="/super-admin/schools/new">New school</ButtonLink>}
       />
 
-      <StatGrid className="grid-cols-2 lg:grid-cols-4">
-        <Stat label="Schools" value={totalSchools.toLocaleString("en-US")} hint={`${data.active} active · ${data.inactive} inactive`} icon="school" tone="gold" />
-        <Stat label="Active students" value={data.students.toLocaleString("en-US")} icon="students" tone="mint" />
-        <Stat label="School Admins" value={data.admins.toLocaleString("en-US")} icon="userCheck" tone="slate" />
+      <StatGrid cols="grid-cols-2 lg:grid-cols-4">
+        <Stat label="Schools" value={totalSchools.toLocaleString("en-US")} hint={`${data.active} active · ${data.inactive} inactive`} />
+        <Stat label="Active students" value={data.students.toLocaleString("en-US")} />
+        <Stat label="School Admins" value={data.admins.toLocaleString("en-US")} />
         <Stat
           label="Needs attention"
           value={data.attention.length}
           hint={urgent ? `${urgent} urgent` : "All clear"}
-          icon="warning"
-          tone={urgent ? "red" : data.attention.length ? "amber" : "mint"}
+          tone={urgent ? "bad" : data.attention.length ? "warning" : "good"}
         />
       </StatGrid>
 
       {data.attention.length > 0 && (
         <Card className="mt-6">
-          <CardHeader title="Needs attention" icon="warning" />
-          <ul className="divide-y divide-slate-100">
+          <CardHeader title="Needs attention" />
+          <ul className="divide-y divide-zinc-100">
             {data.attention.slice(0, 10).map((item) => (
-              <li key={`${item.schoolId}-${item.kind}`} className="flex flex-wrap items-center gap-3 px-5 py-3 text-sm transition-colors hover:bg-[rgb(255_255_255/0.03)] sm:px-6">
+              <li key={`${item.schoolId}-${item.kind}`} className="flex flex-wrap items-center gap-3 px-5 py-2.5 text-sm">
                 <Badge tone={item.tone} dot>
                   {item.label}
                 </Badge>
-                <Link href={`/super-admin/schools/${item.schoolId}`} className="font-bold text-slate-900 hover:text-blue-700">
+                <Link href={`/super-admin/schools/${item.schoolId}`} className={rowLink}>
                   {item.schoolName}
                 </Link>
-                <span className="text-slate-500">{item.detail}</span>
+                <span className="text-zinc-500">{item.detail}</span>
               </li>
             ))}
           </ul>
@@ -139,28 +133,24 @@ async function Dashboard() {
       )}
 
       <div className="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-5">
-        <div className="flex flex-col gap-6 lg:col-span-2">
-        <Card>
-          <CardHeader title="Newest schools" icon="school" actions={<MoreLink href="/super-admin/schools">View all</MoreLink>} />
+        <Card className="lg:col-span-2">
+          <CardHeader title="Newest schools" actions={<MoreLink href="/super-admin/schools">View all</MoreLink>} />
           {data.recentSchools.length === 0 ? (
-            <EmptyState icon="school">
+            <EmptyState>
               No schools yet.{" "}
-              <Link href="/super-admin/schools/new" className="font-semibold text-blue-700">
+              <Link href="/super-admin/schools/new" className={linkClass}>
                 Create the first one
               </Link>
             </EmptyState>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {data.recentSchools.map((s) => (
-                <li key={s.id} className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-[rgb(255_255_255/0.03)] sm:px-6">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-sm font-black text-blue-700 ring-1 ring-blue-300/50">
-                    {s.name.trim().charAt(0).toUpperCase()}
-                  </span>
+                <li key={s.id} className="flex items-center gap-3 px-5 py-3">
                   <div className="min-w-0 flex-1">
-                    <Link href={`/super-admin/schools/${s.id}`} className="block truncate font-bold text-slate-900 hover:text-blue-700">
+                    <Link href={`/super-admin/schools/${s.id}`} className={`block truncate text-sm ${rowLink}`}>
                       {s.name}
                     </Link>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-zinc-500">
                       {s._count.students.toLocaleString("en-US")} students · added {formatDate(s.createdAt, PLATFORM_TIME_ZONE)}
                     </p>
                   </div>
@@ -171,65 +161,29 @@ async function Dashboard() {
           )}
         </Card>
 
-        <Card>
-          <CardHeader title="Quick actions" icon="plus" />
-          <div className="grid grid-cols-2 gap-3 p-4 sm:p-5">
-            {(
-              [
-                ["/super-admin/schools/new", "New school", "school"],
-                ["/super-admin/plans/new", "New plan", "plans"],
-                ["/super-admin/notifications", "Send message", "bell"],
-                ["/super-admin/settings", "Settings", "settings"],
-              ] as const
-            ).map(([href, label, icon]) => {
-              const Icon = icons[icon];
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  className="group flex items-center gap-3 rounded-2xl border border-line bg-[rgb(255_255_255/0.025)] p-3 text-sm font-bold text-slate-800 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800"
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-500 ring-1 ring-blue-300/50 transition-colors group-hover:bg-metal-gold group-hover:text-canvas">
-                    <Icon width={17} height={17} strokeWidth={2.1} />
-                  </span>
-                  {label}
-                </Link>
-              );
-            })}
-          </div>
-        </Card>
-        </div>
-
         <Card className="lg:col-span-3">
-          <CardHeader title="Recent activity" icon="pulse" />
+          <CardHeader title="Recent activity" />
           {data.activity.length === 0 ? (
-            <EmptyState icon="pulse">No activity yet.</EmptyState>
+            <EmptyState>No activity yet.</EmptyState>
           ) : (
-            <ol className="relative px-5 py-4 sm:px-6">
-              <span aria-hidden className="absolute bottom-6 left-[1.85rem] top-6 w-px bg-gradient-to-b from-[rgb(229_192_123/0.5)] via-[rgb(255_255_255/0.08)] to-transparent sm:left-[2.1rem]" />
-              {data.activity.map((a, i) => (
-                <li key={a.id.toString()} className="relative flex gap-4 py-2 text-sm">
-                  <span
-                    aria-hidden
-                    className={`relative mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ring-4 ring-canvas ${i === 0 ? "bg-metal-gold shadow-[0_0_10px_rgb(229_192_123/0.9)]" : "bg-slate-400"}`}
-                  />
-                  <div className="min-w-0 flex-1 sm:flex sm:items-baseline sm:justify-between sm:gap-4">
-                    <p className="font-semibold text-slate-900">
-                      {ACTION_LABELS[a.action] ?? a.action}
-                      {a.school && (
-                        <>
-                          <span className="text-slate-400"> · </span>
-                          <Link href={`/super-admin/schools/${a.school.id}`} className="text-blue-700 hover:text-blue-800">
-                            {a.school.name}
-                          </Link>
-                        </>
-                      )}
-                    </p>
-                    <p className="shrink-0 text-xs text-slate-500">
-                      {formatDateTime(a.createdAt, PLATFORM_TIME_ZONE)}
-                      {a.actor && ` · ${a.actor.fullName}`}
-                    </p>
-                  </div>
+            <ol className="divide-y divide-zinc-100">
+              {data.activity.map((a) => (
+                <li key={a.id.toString()} className="px-5 py-2.5 text-sm sm:flex sm:items-baseline sm:justify-between sm:gap-4">
+                  <p className="text-zinc-950">
+                    {ACTION_LABELS[a.action] ?? a.action}
+                    {a.school && (
+                      <>
+                        <span className="text-zinc-300"> · </span>
+                        <Link href={`/super-admin/schools/${a.school.id}`} className="text-zinc-600 underline-offset-4 hover:text-zinc-950 hover:underline">
+                          {a.school.name}
+                        </Link>
+                      </>
+                    )}
+                  </p>
+                  <p className="shrink-0 text-xs tabular-nums text-zinc-500">
+                    {formatDateTime(a.createdAt, PLATFORM_TIME_ZONE)}
+                    {a.actor && ` · ${a.actor.fullName}`}
+                  </p>
                 </li>
               ))}
             </ol>

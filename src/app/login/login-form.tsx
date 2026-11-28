@@ -8,9 +8,9 @@ export function LoginForm() {
   const [state, action, pending] = useActionState<LoginState, FormData>(login, undefined);
 
   return (
-    <form action={action} className="mt-8 space-y-5">
+    <form action={action} className="mt-6 space-y-4">
       <div>
-        <label htmlFor="email" className="block text-[13px] font-semibold text-slate-700">
+        <label htmlFor="email" className="block text-sm font-medium text-zinc-900">
           Email
         </label>
         <input
@@ -25,7 +25,7 @@ export function LoginForm() {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-[13px] font-semibold text-slate-700">
+        <label htmlFor="password" className="block text-sm font-medium text-zinc-900">
           Password
         </label>
         <input
@@ -43,7 +43,7 @@ export function LoginForm() {
         <Alert tone="error">{state.error}</Alert>
       )}
 
-      <Button type="submit" disabled={pending} className="w-full py-3 text-[15px]">
+      <Button type="submit" disabled={pending} className="w-full">
         {pending ? "Signing in…" : "Sign in"}
       </Button>
     </form>

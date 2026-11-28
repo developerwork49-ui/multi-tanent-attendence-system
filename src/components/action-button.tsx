@@ -23,7 +23,9 @@ export function ActionButton({ action, fields, label, pendingLabel, confirm, var
   const [asking, setAsking] = useState(false);
   const hidden = Object.entries(fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={String(v)} />);
   const trigger = link
-    ? "text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800 disabled:opacity-60"
+    ? variant === "danger"
+      ? "text-sm font-medium text-red-600 transition-colors hover:text-red-700 disabled:opacity-60"
+      : "text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 disabled:opacity-60"
     : undefined;
 
   return (
@@ -39,13 +41,13 @@ export function ActionButton({ action, fields, label, pendingLabel, confirm, var
             {label}
           </button>
         ) : (
-          <Button type="button" variant={variant} onClick={() => setAsking(true)}>
+          <Button type="button" variant={variant === "danger" ? "dangerOutline" : variant} onClick={() => setAsking(true)}>
             {label}
           </Button>
         )
       ) : (
         <>
-          {confirm && <span className="text-xs text-slate-700">{confirm}</span>}
+          {confirm && <span className="text-xs text-zinc-700">{confirm}</span>}
           {link && !confirm ? (
             <button type="submit" className={trigger} disabled={pending}>
               {pending ? (pendingLabel ?? "Working…") : label}

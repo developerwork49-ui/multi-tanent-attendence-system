@@ -10,7 +10,7 @@ import { qrSvg } from "@/lib/qr";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { PrintButton } from "@/components/print-button";
 import { StudentCard } from "@/components/student-card";
-import { Button, Card, EmptyState, inputClass, PageHeader, Pagination, subtleLink } from "@/components/ui";
+import { Button, Card, EmptyState, inputClass, PageHeader, Pagination, subtleLink, inputBase } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Print cards" };
 
@@ -66,7 +66,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/card
           <form className="flex flex-wrap items-end gap-3 p-4">
             <div>
               <label htmlFor="class" className="sr-only">Class</label>
-              <select id="class" name="class" defaultValue={classParam} className={`${inputClass} mt-0 w-auto`}>
+              <select id="class" name="class" defaultValue={classParam} className={`${inputBase} w-auto`}>
                 <option value="">All classes</option>
                 {classes.map((c) => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -76,7 +76,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/card
             </div>
             <div className="min-w-48 flex-1">
               <label htmlFor="q" className="sr-only">Search</label>
-              <input id="q" name="q" type="search" defaultValue={q} placeholder="Only some students? Search name or ID…" className={`${inputClass} mt-0`} />
+              <input id="q" name="q" type="search" defaultValue={q} placeholder="Only some students? Search name or ID…" className={`${inputBase} block w-full`} />
             </div>
             <Button type="submit" variant="secondary">Show</Button>
             {(classParam || q) && <Link href="/school/cards" className={subtleLink}>Clear</Link>}

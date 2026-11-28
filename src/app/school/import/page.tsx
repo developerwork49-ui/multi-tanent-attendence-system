@@ -32,18 +32,18 @@ async function Content() {
           [
             "Download the template",
             <>
-              <a href="/school/import/template" className="font-semibold text-blue-700 hover:text-blue-800" download>Excel (.xlsx)</a> or{" "}
-              <a href="/school/import/template?format=csv" className="font-semibold text-blue-700 hover:text-blue-800" download>CSV</a>
+              <a href="/school/import/template" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950" download>Excel (.xlsx)</a> or{" "}
+              <a href="/school/import/template?format=csv" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950" download>CSV</a>
             </>,
           ],
-          ["Fill it in", <>One student per row: <strong className="text-slate-800">Student ID</strong>, <strong className="text-slate-800">Full Name</strong>, Class.</>],
+          ["Fill it in", <>One student per row: <strong className="text-zinc-800">Student ID</strong>, <strong className="text-zinc-800">Full Name</strong>, Class.</>],
           ["Check the file", "Nothing is saved yet — you see what happens to every row."],
           ["Import", "All-or-nothing: if anything fails, nothing is saved."],
         ].map(([title, text], i) => (
-          <li key={i} className="glass relative overflow-hidden rounded-3xl p-5">
-            <span className="bg-metal-gold flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-canvas shadow-gold">{i + 1}</span>
-            <p className="mt-3 font-extrabold tracking-tight text-slate-900">{title}</p>
-            <p className="mt-1 text-sm text-slate-500">{text}</p>
+          <li key={i} className="border border-zinc-200 bg-white relative overflow-hidden rounded-lg p-5">
+            <span className="bg-zinc-900 flex h-8 w-8 items-center justify-center rounded-md text-sm font-semibold text-white">{i + 1}</span>
+            <p className="mt-3 font-semibold tracking-tight text-zinc-900">{title}</p>
+            <p className="mt-1 text-sm text-zinc-500">{text}</p>
           </li>
         ))}
       </ol>

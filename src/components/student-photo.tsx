@@ -20,7 +20,7 @@ export function StudentPhoto({
         width={size}
         height={size}
         style={style}
-        className={`shrink-0 rounded-full bg-slate-100 object-cover ring-1 ring-blue-300/50 ${className}`}
+        className={`shrink-0 rounded-full bg-zinc-100 object-cover ring-1 ring-black/5 ${className}`}
       />
     );
   }
@@ -28,7 +28,7 @@ export function StudentPhoto({
     <span
       aria-hidden
       style={{ ...style, fontSize: Math.max(10, size * 0.36) }}
-      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-blue-100 font-extrabold text-blue-700 ring-1 ring-blue-300/50 ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-zinc-100 font-medium text-zinc-600 ${className}`}
     >
       {initials(student.fullName)}
     </span>

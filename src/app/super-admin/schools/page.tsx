@@ -6,7 +6,7 @@ import { requireSuperAdmin } from "@/lib/auth/dal";
 import { platformDb } from "@/lib/db";
 import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { Button, ButtonLink, Card, EmptyState, PageHeader, Pagination, StatusBadge, filterBar, formatDate, inputClass, rowLink, subtleLink, tbodyRow, td, th, theadRow } from "@/components/ui";
+import { Button, ButtonLink, Card, EmptyState, PageHeader, Pagination, StatusBadge, filterBar, formatDate, inputClass, rowLink, subtleLink, tbodyRow, td, th, theadRow, inputBase } from "@/components/ui";
 import { icons } from "@/components/icons";
 
 export const metadata: Metadata = { title: "Schools" };
@@ -101,14 +101,14 @@ async function SchoolsList({ searchParams }: { searchParams: PageProps<"/super-a
             type="search"
             defaultValue={q}
             placeholder="Search by name, web name or email…"
-            className={`${inputClass} mt-0`}
+            className={`${inputBase} block w-full`}
           />
         </div>
         <div>
           <label htmlFor="status" className="sr-only">
             Status
           </label>
-          <select id="status" name="status" defaultValue={status ?? ""} className={`${inputClass} mt-0`}>
+          <select id="status" name="status" defaultValue={status ?? ""} className={`${inputBase} block w-full`}>
             <option value="">All statuses</option>
             <option value="ACTIVE">Active</option>
             <option value="INACTIVE">Inactive</option>
@@ -125,13 +125,13 @@ async function SchoolsList({ searchParams }: { searchParams: PageProps<"/super-a
       </form>
 
       {schools.length === 0 ? (
-        <EmptyState icon="school">
+        <EmptyState>
           {q || status ? (
             "No schools match these filters."
           ) : (
             <>
               No schools yet.{" "}
-              <Link href="/super-admin/schools/new" className="font-semibold text-blue-700">
+              <Link href="/super-admin/schools/new" className="font-semibold text-zinc-900">
                 Create the first one
               </Link>
             </>
@@ -150,29 +150,26 @@ async function SchoolsList({ searchParams }: { searchParams: PageProps<"/super-a
                 <th scope="col" className={th}>Added</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-zinc-100">
               {schools.map((s) => (
                 <tr key={s.id} className={tbodyRow}>
                   <td className={td}>
                     <div className="flex items-center gap-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-sm font-black text-blue-700 ring-1 ring-blue-300/50">
-                        {s.name.trim().charAt(0).toUpperCase()}
-                      </span>
                       <div className="min-w-0">
                         <Link href={`/super-admin/schools/${s.id}`} className={rowLink}>
                           {s.name}
                         </Link>
-                        <div className="text-xs text-slate-500">{s.slug}</div>
+                        <div className="text-xs text-zinc-500">{s.slug}</div>
                       </div>
                     </div>
                   </td>
                   <td className={td}>
                     <StatusBadge status={s.status} />
                   </td>
-                  <td className={`${td} text-right font-bold tabular-nums text-slate-900`}>{s._count.students.toLocaleString("en-US")}</td>
+                  <td className={`${td} text-right font-medium tabular-nums text-zinc-900`}>{s._count.students.toLocaleString("en-US")}</td>
                   <td className={`${td} text-right tabular-nums`}>{s._count.users}</td>
-                  <td className={`${td} text-slate-500`}>{s.timezone}</td>
-                  <td className={`${td} whitespace-nowrap text-slate-500`}>{formatDate(s.createdAt, PLATFORM_TIME_ZONE)}</td>
+                  <td className={`${td} text-zinc-500`}>{s.timezone}</td>
+                  <td className={`${td} whitespace-nowrap text-zinc-500`}>{formatDate(s.createdAt, PLATFORM_TIME_ZONE)}</td>
                 </tr>
               ))}
             </tbody>

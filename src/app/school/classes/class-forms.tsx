@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { saveClass } from "./actions";
 import type { FormState } from "@/lib/form";
-import { Button, FormMessage, inputClass } from "@/components/ui";
+import { Button, FormMessage, inputClass, inputBase } from "@/components/ui";
 
 export function AddClassForm() {
   const [state, action, pending] = useActionState<FormState, FormData>(saveClass, undefined);
@@ -19,11 +19,11 @@ export function AddClassForm() {
     <form action={action} className="space-y-3">
       <FormMessage state={state} />
       <div key={round} className="flex flex-wrap items-end gap-3">
-        <label className="min-w-48 flex-1 text-sm font-medium text-slate-700">
+        <label className="min-w-48 flex-1 text-sm font-medium text-zinc-700">
           New class name
           <input name="name" maxLength={100} placeholder='e.g. "Grade 5 - A"' className={inputClass} aria-invalid={!!err} />
         </label>
-        <label className="w-28 text-sm font-medium text-slate-700">
+        <label className="w-28 text-sm font-medium text-zinc-700">
           Order
           <input name="sortOrder" inputMode="numeric" placeholder="0" className={inputClass} />
         </label>
@@ -31,7 +31,7 @@ export function AddClassForm() {
           {pending ? "Adding…" : "Add class"}
         </Button>
       </div>
-      <p className="text-xs text-slate-500">Classes are listed by order number, then name.</p>
+      <p className="text-xs text-zinc-500">Classes are listed by order number, then name.</p>
     </form>
   );
 }
@@ -46,7 +46,7 @@ export function EditClassRow({ id, name, sortOrder }: { id: number; name: string
   }
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">
+      <button type="button" onClick={() => setOpen(true)} className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950">
         Rename
       </button>
     );
@@ -54,8 +54,8 @@ export function EditClassRow({ id, name, sortOrder }: { id: number; name: string
   return (
     <form action={action} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="classId" value={id} />
-      <input name="name" defaultValue={name} maxLength={100} aria-label="Class name" className={`${inputClass} mt-0 w-44`} />
-      <input name="sortOrder" defaultValue={sortOrder} inputMode="numeric" aria-label="Order" className={`${inputClass} mt-0 w-20`} />
+      <input name="name" defaultValue={name} maxLength={100} aria-label="Class name" className={`${inputBase} w-44`} />
+      <input name="sortOrder" defaultValue={sortOrder} inputMode="numeric" aria-label="Order" className={`${inputBase} w-20`} />
       <Button type="submit" disabled={pending}>Save</Button>
       <Button type="button" variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
       {state?.error && <span className="w-full text-xs text-red-600">{state.error}</span>}

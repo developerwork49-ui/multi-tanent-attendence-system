@@ -19,7 +19,7 @@ export function SettingsForm({ initial, timeZones }: Props) {
     <form action={action} className="max-w-3xl space-y-6" noValidate>
       <FormMessage state={state} />
       <Card>
-        <CardHeader title="Branding" icon="settings" />
+        <CardHeader title="Branding" />
         <div className="grid gap-4 p-5">
           <Field label="Platform name" htmlFor="platformName" required error={err("platformName")} hint="Shown in the sidebar, on the sign-in page and in the browser tab.">
             <input id="platformName" name="platformName" maxLength={80} defaultValue={v.platformName} className={inputClass} {...ariaFor(err("platformName"), "platformName")} />
@@ -28,7 +28,7 @@ export function SettingsForm({ initial, timeZones }: Props) {
       </Card>
 
       <Card>
-        <CardHeader title="Support contact" icon="bell" />
+        <CardHeader title="Support contact" />
         <div className="grid gap-4 p-5 sm:grid-cols-2">
           <Field label="Support email" htmlFor="supportEmail" error={err("supportEmail")} hint="School Admins see this when they need help.">
             <input id="supportEmail" name="supportEmail" type="email" maxLength={254} defaultValue={v.supportEmail} className={inputClass} {...ariaFor(err("supportEmail"), "supportEmail")} />
@@ -50,7 +50,7 @@ export function SettingsForm({ initial, timeZones }: Props) {
       </Card>
 
       <Card>
-        <CardHeader title="Defaults for new schools" icon="school" />
+        <CardHeader title="Defaults for new schools" />
         <div className="grid gap-4 p-5 sm:grid-cols-2">
           <Field label="Default time zone" htmlFor="defaultTimezone" required error={err("defaultTimezone")} hint="Pre-selected when you create a school.">
             <select id="defaultTimezone" name="defaultTimezone" defaultValue={v.defaultTimezone} className={inputClass} {...ariaFor(err("defaultTimezone"), "defaultTimezone")}>

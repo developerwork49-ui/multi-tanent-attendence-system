@@ -2,212 +2,56 @@
 
 /*
  * =====================================================================
- *  "Forest & Gold" luxury dark theme
+ *  Design system: clean, professional white & black
  *
- *  - Canvas: deep charcoal / forest green with soft gold and emerald glows
- *  - Surfaces: frosted glass (white 4-5 %, blur, hairline border)
- *  - Accent: metallic gold (#E5C07B -> #D4AF37); success: emerald / mint
- *  - Type: Outfit (geometric), extra-bold tight headings
+ *  - Surfaces: white, separated by 1px zinc hairlines (no glass, no glow)
+ *  - Text: zinc-950 for headings, zinc-600/500 for secondary text
+ *  - Primary action: near-black (zinc-900) with white text
+ *  - Colour is reserved for meaning: emerald = present/active,
+ *    red = absent/error, amber = warning
+ *  - Type: Inter, tight headings, tabular numbers in tables
+ *  - Motion: plain 150 ms colour transitions only
  *
- *  Pages use Tailwind's named colours (slate, blue, emerald, red, amber,
- *  white). On screen those names are re-mapped to this palette:
- *    white -> opaque surface        slate-50 -> raised opaque surface
- *    slate-100..300 -> white hairlines/fills   slate-400..900 -> text
- *    blue -> gold      emerald -> mint      red / amber -> soft tints
- *  Print keeps Tailwind's original light colours (white paper), and the
- *  printable student ID card keeps them on screen too.
+ *  Shared building blocks live in src/components/ui.tsx. Pages should
+ *  use those instead of styling cards, buttons and tables by hand.
  * =====================================================================
  */
 
 @theme inline {
-  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 @theme {
-  --color-canvas: #070b0a;
-  --color-panel: #090e0d;
-  --color-gold: #e5c07b;
-  --color-gold-bright: #f6e2ad;
-  --color-gold-deep: #d4af37;
-  --color-gold-dark: #9a7424;
-  --color-mint: #34d399;
-  --color-mint-bright: #7af0c4;
-  --color-glass: rgb(255 255 255 / 0.045);
-  --color-glass-strong: rgb(255 255 255 / 0.075);
-  --color-line: rgb(255 255 255 / 0.09);
-  /* Opaque tints for sticky table headers (light for print, dark on screen below) */
-  --color-sticky-today: #dbeafe;
-  --color-sticky-weekend: #f1f5f9;
+  /* Opaque tints for sticky register cells (today / weekend columns). */
+  --color-sticky-today: #f4f4f5;
+  --color-sticky-weekend: #fafafa;
 
-  --shadow-card: inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 24px 48px -28px rgb(0 0 0 / 0.9);
-  --shadow-card-hover: inset 0 1px 0 0 rgb(255 255 255 / 0.09), 0 0 0 1px rgb(229 192 123 / 0.16),
-    0 28px 56px -26px rgb(0 0 0 / 0.95), 0 0 40px -18px rgb(229 192 123 / 0.35);
-  --shadow-gold: inset 0 1px 0 0 rgb(255 255 255 / 0.5), inset 0 -1px 0 0 rgb(0 0 0 / 0.15),
-    0 10px 28px -10px rgb(212 175 55 / 0.65);
-  --shadow-gold-glow: 0 0 0 1px rgb(229 192 123 / 0.4), 0 0 26px -6px rgb(229 192 123 / 0.55);
-  --shadow-mint-glow: 0 0 0 1px rgb(52 211 153 / 0.35), 0 0 24px -6px rgb(52 211 153 / 0.5);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-pop: 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 8px 24px -8px rgb(0 0 0 / 0.12);
 }
 
-/* ---------- Reusable surfaces ---------- */
-
-/* Frosted glass card */
-@utility glass {
-  background-color: rgb(255 255 255 / 0.045);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgb(255 255 255 / 0.085);
-  box-shadow: var(--shadow-card);
-}
-
-/* Metallic gold fill (buttons, chips, active bars) */
-@utility bg-metal-gold {
-  background-image: linear-gradient(135deg, #fbedc4 0%, #e5c07b 28%, #d4af37 60%, #b08627 100%);
-}
-
-/* Metallic gold text */
-@utility text-metal-gold {
-  background-image: linear-gradient(180deg, #fbedc4 0%, #e5c07b 45%, #c99a2e 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Bright headline text with a soft fade to the bottom */
-@utility text-headline {
-  background-image: linear-gradient(180deg, #ffffff 0%, #ffffff 40%, rgb(255 255 255 / 0.72) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@media screen {
-  :root {
-    color-scheme: dark;
-
-    /* Surfaces (opaque: used by sticky table cells and inputs) */
-    --color-white: #111816;
-    --color-slate-50: #151d1a;
-    --color-sticky-today: #29251a;
-    --color-sticky-weekend: #121a17;
-    /* Hairlines and soft fills */
-    --color-slate-100: rgb(255 255 255 / 0.07);
-    --color-slate-200: rgb(255 255 255 / 0.1);
-    --color-slate-300: rgb(255 255 255 / 0.16);
-    /* Text, from dim to bright */
-    --color-slate-400: #6f7d78;
-    --color-slate-500: #8a9792;
-    --color-slate-600: #a9b4af;
-    --color-slate-700: #c8d0cc;
-    --color-slate-800: #e3e9e6;
-    --color-slate-900: #f4f7f5;
-    --color-slate-950: #ffffff;
-
-    /* Brand accent: metallic gold */
-    --color-blue-50: rgb(229 192 123 / 0.09);
-    --color-blue-100: rgb(229 192 123 / 0.16);
-    --color-blue-300: rgb(229 192 123 / 0.42);
-    --color-blue-400: #ecca8a;
-    --color-blue-500: #e5c07b;
-    --color-blue-600: #d4af37;
-    --color-blue-700: #ecca8a;
-    --color-blue-800: #f3d9a4;
-    --color-blue-900: #f8e8c4;
-
-    /* Success: emerald / mint */
-    --color-emerald-50: rgb(52 211 153 / 0.09);
-    --color-emerald-100: rgb(52 211 153 / 0.16);
-    --color-emerald-300: rgb(52 211 153 / 0.42);
-    --color-emerald-400: #5ee6b3;
-    --color-emerald-500: #34d399;
-    --color-emerald-600: #10b981;
-    --color-emerald-700: #6ee7b7;
-    --color-emerald-800: #a7f3d0;
-    --color-emerald-900: #d1fae5;
-
-    /* Danger */
-    --color-red-50: rgb(248 113 113 / 0.09);
-    --color-red-100: rgb(248 113 113 / 0.16);
-    --color-red-300: rgb(248 113 113 / 0.42);
-    --color-red-400: #f87171;
-    --color-red-500: #f87171;
-    --color-red-600: #ef4444;
-    --color-red-700: #fca5a5;
-    --color-red-800: #fecaca;
-    --color-red-900: #fee2e2;
-
-    /* Warning (orange-amber, distinct from the gold accent) */
-    --color-amber-50: rgb(251 146 60 / 0.09);
-    --color-amber-100: rgb(251 146 60 / 0.16);
-    --color-amber-300: rgb(251 146 60 / 0.42);
-    --color-amber-400: #fb923c;
-    --color-amber-500: #fb923c;
-    --color-amber-600: #f97316;
-    --color-amber-700: #fdba74;
-    --color-amber-800: #fed7aa;
-    --color-amber-900: #ffedd5;
-  }
-
-  /* The printable ID card stays a real, light card on screen too. */
-  .student-card {
-    color-scheme: light;
-    --color-white: #fff;
-    --color-slate-100: oklch(96.8% 0.007 247.896);
-    --color-slate-200: oklch(92.9% 0.013 255.508);
-    --color-slate-300: oklch(86.9% 0.022 252.894);
-    --color-slate-500: oklch(55.4% 0.046 257.417);
-    --color-slate-600: oklch(44.6% 0.043 257.281);
-    --color-slate-900: oklch(20.8% 0.042 265.755);
-    --color-blue-100: oklch(93.2% 0.032 255.585);
-    --color-blue-300: oklch(80.9% 0.105 251.813);
-    --color-blue-700: oklch(48.8% 0.243 264.376);
-    box-shadow: 0 0 0 1px rgb(229 192 123 / 0.25), 0 18px 40px -16px rgb(0 0 0 / 0.85);
-  }
-
-  body {
-    background:
-      radial-gradient(1100px 720px at 105% -12%, rgb(229 192 123 / 0.11), transparent 62%),
-      radial-gradient(950px 640px at -12% 108%, rgb(16 185 129 / 0.11), transparent 62%),
-      radial-gradient(800px 520px at 48% 38%, rgb(18 64 50 / 0.22), transparent 72%),
-      linear-gradient(180deg, #09110f 0%, #070b0a 55%, #050807 100%);
-    background-attachment: fixed;
-  }
-
-  /* Fine film grain for depth */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  ::selection {
-    background: rgb(229 192 123 / 0.35);
-    color: #fff;
-  }
-
-  * {
-    scrollbar-color: rgb(255 255 255 / 0.14) transparent;
-    scrollbar-width: thin;
-  }
-
-  input::-webkit-calendar-picker-indicator {
-    filter: invert(0.85) sepia(0.4) saturate(2) hue-rotate(5deg);
-  }
+:root {
+  color-scheme: light;
 }
 
 body {
-  color: var(--color-slate-900);
+  background: #fff;
+  color: var(--color-zinc-950);
   font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
 h3 {
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--color-zinc-900);
+  color: #fff;
 }
 
 /* ---------- Printing (student cards, register) ---------- */
@@ -220,35 +64,19 @@ h3 {
     background: #fff;
     color: #000;
   }
-  .glass {
-    background: #fff;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    box-shadow: none;
-    border-color: #ddd;
-  }
-  .text-headline,
-  .text-metal-gold {
-    color: #000;
-    background: none;
-  }
-  /* Never print a page mid-animation */
-  [data-page] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
   .student-card {
     break-inside: avoid;
   }
 }
 
-@keyframes shimmer {
-  to {
-    transform: translateX(100%);
-  }
-}
-
 @layer base {
+  /* Native checkboxes, radios and range inputs follow the black accent. */
+  input[type="checkbox"],
+  input[type="radio"],
+  progress {
+    accent-color: var(--color-zinc-900);
+  }
+
   /* Scroll areas contain their own absolutely-positioned bits (e.g. sr-only
      table labels), so nothing escapes and widens the page on phones. */
   .overflow-x-auto,

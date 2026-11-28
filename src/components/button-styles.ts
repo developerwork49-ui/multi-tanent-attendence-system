@@ -1,20 +1,19 @@
-/* Button looks, shared by the animated <Button>/<ButtonLink> and by plain links/buttons in Server Components. */
+/* Button looks, shared by <Button>/<ButtonLink> and by plain links/buttons in Server Components. */
 
 export const buttonStyles = {
-  primary:
-    "bg-metal-gold text-canvas shadow-gold hover:brightness-110 before:pointer-events-none before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-[rgb(255_255_255/0.45)] before:to-transparent before:transition-transform before:duration-700 hover:before:translate-x-full",
-  secondary:
-    "border border-line bg-glass text-slate-800 backdrop-blur-md hover:border-blue-300 hover:bg-glass-strong hover:text-slate-900",
-  danger:
-    "bg-gradient-to-b from-red-400 to-red-600 text-canvas shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_10px_26px_-10px_rgb(239_68_68/0.65)] hover:brightness-110",
-  success:
-    "bg-gradient-to-b from-emerald-400 to-emerald-600 text-canvas shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_10px_26px_-10px_rgb(16_185_129/0.65)] hover:brightness-110",
+  primary: "bg-zinc-900 text-white shadow-xs hover:bg-zinc-800 active:bg-zinc-950",
+  secondary: "bg-white text-zinc-900 shadow-xs ring-1 ring-inset ring-zinc-300 hover:bg-zinc-50 active:bg-zinc-100",
+  danger: "bg-red-600 text-white shadow-xs hover:bg-red-500 active:bg-red-700",
+  /** Quiet destructive action (first click of a confirm-then-click button). */
+  dangerOutline: "bg-white text-red-600 shadow-xs ring-1 ring-inset ring-zinc-300 hover:bg-red-50 hover:ring-red-300",
+  success: "bg-emerald-600 text-white shadow-xs hover:bg-emerald-500 active:bg-emerald-700",
+  ghost: "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900",
 } as const;
 
 export type ButtonVariant = keyof typeof buttonStyles;
 
 export const buttonBase =
-  "relative inline-flex select-none items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-bold tracking-tight transition-[filter,box-shadow,background-color,border-color,color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none";
+  "inline-flex h-9 select-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-3.5 text-sm font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900 disabled:pointer-events-none disabled:opacity-50";
 
 export function buttonClass(variant: ButtonVariant = "primary", className = "") {
   return `${buttonBase} ${buttonStyles[variant]} ${className}`;

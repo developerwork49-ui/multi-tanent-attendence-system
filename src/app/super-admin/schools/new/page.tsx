@@ -17,7 +17,7 @@ export default function NewSchoolPage() {
         title="New school"
         description={
           <>
-            <Link href="/super-admin/schools" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">
+            <Link href="/super-admin/schools" className="text-zinc-500 transition-colors hover:text-zinc-950">
               Schools
             </Link>{" "}
             / New

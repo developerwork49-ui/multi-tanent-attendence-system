@@ -49,7 +49,7 @@ export function PlanForm({ planId, initial }: { planId?: number; initial: Record
         </Field>
       </div>
       {planId && (
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-zinc-500">
           Changes apply to new subscriptions only. Schools already on this plan keep the price and storage limit they signed up with.
         </p>
       )}

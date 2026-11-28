@@ -9,6 +9,13 @@ Every school's data is walled off twice: in the application code, and by **Postg
 Next.js 16 (App Router, Server Actions) · React 19 · Prisma 7 · PostgreSQL · Tailwind CSS 4 · Zod.
 Small helpers: `qrcode` (QR images), `jsqr` (camera decoding fallback), `read-excel-file` / `write-excel-file` (import + template).
 
+## Design
+
+Clean, professional white and black interface (Inter font, hairline borders, no animation library). Colour is used only for meaning: green = present/active, red = absent/error, amber = warning.
+
+- Shared building blocks live in `src/components/ui.tsx` (PageHeader, Card, Stat/StatGrid, Badge, Alert, Button, Field, table styles, Pagination, BarChart, Meter). Build new screens from these instead of styling by hand.
+- Theme notes are at the top of `src/app/globals.css`.
+
 ## Local setup
 
 1. PostgreSQL running locally with the `attendance_dev` and `attendance_shadow` databases (see `.env.example`).

@@ -71,20 +71,20 @@ async function Content() {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <Card>
-            <CardHeader title="Messages from the platform" icon="inbox" />
+            <CardHeader title="Messages from the platform" />
             {messages.length === 0 ? (
               <EmptyState>No messages yet.</EmptyState>
             ) : (
-              <ul className="divide-y divide-slate-100">
+              <ul className="divide-y divide-zinc-100">
                 {messages.map((m) => (
-                  <li key={m.id} className={`px-5 py-4 ${m.readAt ? "" : "bg-blue-50/60"}`} data-unread={m.readAt ? undefined : "true"}>
+                  <li key={m.id} className={`px-5 py-4 ${m.readAt ? "" : "bg-zinc-50"}`} data-unread={m.readAt ? undefined : "true"}>
                     <div className="flex flex-wrap items-center gap-2">
-                      {!m.readAt && <span aria-label="Unread" className="h-2 w-2 rounded-full bg-blue-500" />}
-                      <h3 className="font-semibold text-slate-900">{m.title}</h3>
+                      {!m.readAt && <span aria-label="Unread" className="h-2 w-2 rounded-full bg-zinc-900" />}
+                      <h3 className="font-semibold text-zinc-900">{m.title}</h3>
                       {m.tone === "IMPORTANT" && <Badge tone="red">Important</Badge>}
-                      <span className="ml-auto text-xs text-slate-500">{formatDateTime(m.createdAt, tz)}</span>
+                      <span className="ml-auto text-xs text-zinc-500">{formatDateTime(m.createdAt, tz)}</span>
                     </div>
-                    <p className="mt-1.5 whitespace-pre-line text-sm text-slate-700">{m.body}</p>
+                    <p className="mt-1.5 whitespace-pre-line text-sm text-zinc-700">{m.body}</p>
                     {!m.readAt && (
                       <div className="mt-2">
                         <ActionButton action={markNotificationRead} fields={{ notificationId: m.id }} label="Mark as read" pendingLabel="Saving…" link />
@@ -98,26 +98,26 @@ async function Content() {
         </div>
         <div className="space-y-6">
           <Card>
-            <CardHeader title="Account alerts" icon="warning" />
+            <CardHeader title="Account alerts" />
             {alerts.length === 0 ? (
               <EmptyState>Everything looks good.</EmptyState>
             ) : (
-              <ul className="divide-y divide-slate-100">
+              <ul className="divide-y divide-zinc-100">
                 {alerts.map((a) => (
                   <li key={a.title} className="space-y-1 px-5 py-3">
                     <Badge tone={a.tone}>{a.title}</Badge>
-                    <p className="text-sm text-slate-600">{a.detail}</p>
+                    <p className="text-sm text-zinc-600">{a.detail}</p>
                   </li>
                 ))}
               </ul>
             )}
           </Card>
           <Card>
-            <CardHeader title="Need help?" icon="info" />
-            <div className="space-y-1 p-5 text-sm text-slate-600">
+            <CardHeader title="Need help?" />
+            <div className="space-y-1 p-5 text-sm text-zinc-600">
               {contact.length ? (
                 contact.map((c) => (
-                  <p key={c} className="font-medium text-slate-900">
+                  <p key={c} className="font-medium text-zinc-900">
                     {c}
                   </p>
                 ))

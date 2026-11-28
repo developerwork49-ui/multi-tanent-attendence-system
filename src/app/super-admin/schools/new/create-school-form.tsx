@@ -19,19 +19,19 @@ export function CreateSchoolForm({ timeZones, defaultTimezone }: Props) {
       <SchoolDetailsFields values={v} errors={err} timeZones={timeZones} autoSlug />
 
       <Card>
-        <CardHeader title="First School Admin" icon="userCheck" />
+        <CardHeader title="First School Admin" />
         <div className="space-y-4 p-5">
-          <label className="flex items-start gap-3 text-sm text-slate-700">
+          <label className="flex items-start gap-3 text-sm text-zinc-700">
             <input
               type="checkbox"
               name="createAdmin"
               checked={createAdmin}
               onChange={(e) => setCreateAdmin(e.target.checked)}
-              className="mt-0.5 h-4 w-4 rounded border-slate-300"
+              className="mt-0.5 h-4 w-4 rounded border-zinc-300"
             />
             <span>
               Create a login for the school now
-              <span className="block text-xs text-slate-500">You can also add admins later. Share the password with the school securely.</span>
+              <span className="block text-xs text-zinc-500">You can also add admins later. Share the password with the school securely.</span>
             </span>
           </label>
 

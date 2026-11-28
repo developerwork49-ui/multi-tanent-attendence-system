@@ -53,8 +53,8 @@ async function Content({ params }: PageProps<"/super-admin/schools/[id]/edit">) 
         title={`Edit ${school.name}`}
         description={
           <>
-            <Link href="/super-admin/schools" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Schools</Link> /{" "}
-            <Link href={`/super-admin/schools/${school.id}`} className="font-semibold text-blue-700 transition-colors hover:text-blue-800">{school.name}</Link> / Edit
+            <Link href="/super-admin/schools" className="text-zinc-500 transition-colors hover:text-zinc-950">Schools</Link> /{" "}
+            <Link href={`/super-admin/schools/${school.id}`} className="text-zinc-500 transition-colors hover:text-zinc-950">{school.name}</Link> / Edit
           </>
         }
       />

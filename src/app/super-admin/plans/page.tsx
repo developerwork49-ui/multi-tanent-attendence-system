@@ -44,7 +44,7 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
         {plans.length === 0 ? (
           <EmptyState>
             No plans yet.{" "}
-            <Link href="/super-admin/plans/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">
+            <Link href="/super-admin/plans/new" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">
               Create the first plan
             </Link>{" "}
             so you can put schools on a subscription.
@@ -62,24 +62,24 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
                   <th scope="col" className={th}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {plans.map((p) => (
                   <tr key={p.id}>
                     <td className={td}>
-                      <Link href={`/super-admin/plans/${p.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">
+                      <Link href={`/super-admin/plans/${p.id}`} className="font-medium text-zinc-900 transition-colors hover:underline underline-offset-4">
                         {p.name}
                       </Link>
-                      {p.description && <div className="max-w-xs truncate text-xs text-slate-500">{p.description}</div>}
+                      {p.description && <div className="max-w-xs truncate text-xs text-zinc-500">{p.description}</div>}
                     </td>
                     <td className={`${td} whitespace-nowrap`}>{formatBytes(p.storageLimitBytes)}</td>
                     <td className={`${td} whitespace-nowrap`}>
-                      {formatMoney(p.priceMinor, p.currency)} <span className="text-slate-500">/ {PERIOD_LABEL[p.billingPeriod].toLowerCase()}</span>
+                      {formatMoney(p.priceMinor, p.currency)} <span className="text-zinc-500">/ {PERIOD_LABEL[p.billingPeriod].toLowerCase()}</span>
                     </td>
                     <td className={`${td} text-right tabular-nums`}>{p._count.subscriptions}</td>
                     <td className={td}>{p.isActive ? <Badge tone="green">Available</Badge> : <Badge>Retired</Badge>}</td>
                     <td className={td}>
                       <div className="flex flex-wrap items-center gap-3">
-                        <Link href={`/super-admin/plans/${p.id}`} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">
+                        <Link href={`/super-admin/plans/${p.id}`} className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950">
                           Edit
                         </Link>
                         <ActionButton
@@ -97,7 +97,7 @@ async function PlansList({ searchParams }: { searchParams: PageProps<"/super-adm
           </div>
         )}
       </Card>
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-zinc-500">
         Retired plans can no longer be chosen for new subscriptions. Schools already on them are not affected.
       </p>
     </div>

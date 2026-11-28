@@ -9,7 +9,7 @@ import { PLATFORM_TIME_ZONE } from "@/lib/platform";
 import type { Prisma } from "@/generated/prisma/client";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { SubscriptionBadge } from "@/components/billing-ui";
-import { Alert, Button, Card, EmptyState, filterBar, formatDate, inputClass, PageHeader, Pagination, td, th, theadRow } from "@/components/ui";
+import { Alert, Button, Card, EmptyState, filterBar, formatDate, inputClass, PageHeader, Pagination, td, th, theadRow, inputBase } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Subscriptions" };
 
@@ -73,7 +73,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/su
       {unsubscribed > 0 && (
         <Alert tone="warning" title={`${unsubscribed} school${unsubscribed === 1 ? "" : "s"} without a subscription`}>
           {unsubscribed === 1 ? "It has" : "They have"} no current plan or custom quota and cannot add students.{" "}
-          <Link href="/super-admin/schools" className="font-semibold text-blue-700 hover:text-blue-800">
+          <Link href="/super-admin/schools" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">
             Open schools →
           </Link>
         </Alert>
@@ -81,7 +81,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/su
       <Card>
         <form className={filterBar}>
           <label htmlFor="show" className="sr-only">Show</label>
-          <select id="show" name="show" defaultValue={show} className={`${inputClass} mt-0 w-auto`}>
+          <select id="show" name="show" defaultValue={show} className={`${inputBase} w-auto`}>
             {Object.entries(FILTERS).map(([k, label]) => (
               <option key={k} value={k}>{label}</option>
             ))}
@@ -103,17 +103,17 @@ async function List({ searchParams }: { searchParams: PageProps<"/super-admin/su
                   <th scope="col" className={th}>Storage</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {subs.map((s) => (
                   <tr key={s.id}>
                     <td className={td}>
-                      <Link href={`/super-admin/schools/${s.school.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">
+                      <Link href={`/super-admin/schools/${s.school.id}`} className="font-medium text-zinc-900 transition-colors hover:underline underline-offset-4">
                         {s.school.name}
                       </Link>
                     </td>
                     <td className={td}>{s.plan.name}</td>
                     <td className={td}><SubscriptionBadge sub={s} /></td>
-                    <td className={`${td} whitespace-nowrap text-slate-600`}>
+                    <td className={`${td} whitespace-nowrap text-zinc-600`}>
                       {formatDate(s.startsAt, PLATFORM_TIME_ZONE)} → {formatDate(s.endsAt, PLATFORM_TIME_ZONE)}
                     </td>
                     <td className={`${td} whitespace-nowrap`}>{formatMoney(s.priceMinor, s.currency)}</td>

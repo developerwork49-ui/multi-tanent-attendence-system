@@ -9,7 +9,7 @@ import { loadRegister } from "@/lib/register";
 import { registerFilters } from "@/lib/register-params";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { ActionButton } from "@/components/action-button";
-import { Button, Card, EmptyState, inputClass, PageHeader, Pagination, subtleLink, buttonClass } from "@/components/ui";
+import { Button, Card, EmptyState, inputClass, PageHeader, Pagination, subtleLink, buttonClass, inputBase } from "@/components/ui";
 import { icons } from "@/components/icons";
 import { RegisterGrid } from "./register-grid";
 import { markRestAbsent } from "./actions";
@@ -55,7 +55,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
         description={`${reg.total.toLocaleString("en-US")} student${reg.total === 1 ? "" : "s"}`}
         actions={
           <>
-            <a href={withQuery("/school/attendance/export", { month: f.month, ...query })} className={buttonClass("secondary", "transition-transform hover:scale-105")} download>
+            <a href={withQuery("/school/attendance/export", { month: f.month, ...query })} className={buttonClass("secondary", "transition-transform")} download>
               <icons.download width={16} height={16} /> Download CSV
             </a>
           </>
@@ -66,7 +66,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
           <div className="flex items-center gap-1">
             <Link href={href(shiftMonth(f.month, -1))} className={buttonClass("secondary", "px-3")} aria-label="Previous month">←</Link>
             <label htmlFor="month" className="sr-only">Month</label>
-            <input id="month" name="month" type="month" defaultValue={f.month} max={thisMonth} className={`${inputClass} mt-0 w-40`} />
+            <input id="month" name="month" type="month" defaultValue={f.month} max={thisMonth} className={`${inputBase} w-40`} />
             <Link
               href={href(shiftMonth(f.month, 1))}
               aria-disabled={f.month >= thisMonth}
@@ -78,7 +78,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
           </div>
           <div>
             <label htmlFor="class" className="sr-only">Class</label>
-            <select id="class" name="class" defaultValue={f.classParam} className={`${inputClass} mt-0 w-auto`}>
+            <select id="class" name="class" defaultValue={f.classParam} className={`${inputBase} w-auto`}>
               <option value="">All classes</option>
               {classes.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -88,10 +88,10 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
           </div>
           <div className="min-w-40 flex-1">
             <label htmlFor="q" className="sr-only">Search</label>
-            <input id="q" name="q" type="search" defaultValue={f.q} placeholder="Search name or ID…" className={`${inputClass} mt-0`} />
+            <input id="q" name="q" type="search" defaultValue={f.q} placeholder="Search name or ID…" className={`${inputBase} block w-full`} />
           </div>
-          <label className="flex items-center gap-2 py-2 text-sm text-slate-700">
-            <input type="checkbox" name="inactive" value="1" defaultChecked={f.includeInactive} className="h-4 w-4 rounded border-slate-300 accent-[#e5c07b]" />
+          <label className="flex items-center gap-2 py-2 text-sm text-zinc-700">
+            <input type="checkbox" name="inactive" value="1" defaultChecked={f.includeInactive} className="h-4 w-4 rounded border-zinc-300 accent-zinc-900" />
             Include inactive
           </label>
           <Button type="submit" variant="secondary">Show</Button>
@@ -100,7 +100,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
           )}
         </form>
         {markDay && reg.total > 0 && (
-          <div className="flex flex-wrap items-center gap-3 border-t border-line px-5 py-3.5 text-sm text-slate-500">
+          <div className="flex flex-wrap items-center gap-3 border-t border-zinc-200 px-5 py-3.5 text-sm text-zinc-500">
             <span>End of the day? Students not scanned on {dateOnlyLabel(markDay)} can be marked absent{f.classId && f.classId !== "none" ? " (this class only)" : ""}:</span>
             <ActionButton
               action={markRestAbsent}
@@ -115,7 +115,7 @@ async function Content({ searchParams }: { searchParams: PageProps<"/school/atte
       <Card className="overflow-hidden">
         {reg.rows.length === 0 ? (
           <EmptyState>
-            {f.q || f.classParam ? "No students match these filters." : <>No students yet. <Link href="/school/students/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Add students</Link> first.</>}
+            {f.q || f.classParam ? "No students match these filters." : <>No students yet. <Link href="/school/students/new" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">Add students</Link> first.</>}
           </EmptyState>
         ) : (
           <RegisterGrid key={`${f.month}|${f.classParam}|${f.q}|${f.includeInactive}|${page}`} days={reg.days} rows={reg.rows} dayTotals={reg.dayTotals} schoolDays={reg.schoolDays} />

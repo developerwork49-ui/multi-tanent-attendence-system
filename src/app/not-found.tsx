@@ -1,17 +1,14 @@
 import { ButtonLink } from "@/components/ui";
-import { Reveal } from "@/components/motion/motion-ui";
 
 export default function NotFound() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
-      <Reveal className="flex flex-col items-center gap-4">
-        <p className="text-metal-gold text-8xl font-black leading-none tracking-tighter sm:text-9xl">404</p>
-        <h1 className="text-headline text-3xl font-black tracking-tight">Page not found</h1>
-        <p className="max-w-md text-sm text-slate-500">This page does not exist, or it belongs to another account.</p>
-        <ButtonLink href="/" className="mt-3">
-          Go to my dashboard
-        </ButtonLink>
-      </Reveal>
+      <p className="text-sm font-medium text-zinc-500">404</p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">Page not found</h1>
+      <p className="mt-2 max-w-md text-sm text-zinc-500">This page does not exist, or it belongs to another account.</p>
+      <ButtonLink href="/" className="mt-6">
+        Go to my dashboard
+      </ButtonLink>
     </main>
   );
 }

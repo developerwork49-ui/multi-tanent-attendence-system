@@ -8,7 +8,7 @@ import { toId } from "@/lib/form";
 import { one, pageParam, withQuery } from "@/lib/params";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { StudentPhoto } from "@/components/student-photo";
-import { Alert, Badge, Button, ButtonLink, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, subtleLink, tbodyRow, td, th, theadRow } from "@/components/ui";
+import { Alert, Badge, Button, ButtonLink, Card, EmptyState, filterBar, inputClass, PageHeader, Pagination, subtleLink, tbodyRow, td, th, theadRow, inputBase } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Students" };
 
@@ -75,11 +75,11 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
         <form className={filterBar} role="search">
           <div className="min-w-48 flex-1">
             <label htmlFor="q" className="sr-only">Search</label>
-            <input id="q" name="q" type="search" defaultValue={q} placeholder="Search name or student ID…" className={`${inputClass} mt-0`} />
+            <input id="q" name="q" type="search" defaultValue={q} placeholder="Search name or student ID…" className={`${inputBase} block w-full`} />
           </div>
           <div>
             <label htmlFor="class" className="sr-only">Class</label>
-            <select id="class" name="class" defaultValue={classParam} className={`${inputClass} mt-0 w-auto`}>
+            <select id="class" name="class" defaultValue={classParam} className={`${inputBase} w-auto`}>
               <option value="">All classes</option>
               {classes.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -89,7 +89,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
           </div>
           <div>
             <label htmlFor="status" className="sr-only">Status</label>
-            <select id="status" name="status" defaultValue={statusParam || "ACTIVE"} className={`${inputClass} mt-0 w-auto`}>
+            <select id="status" name="status" defaultValue={statusParam || "ACTIVE"} className={`${inputBase} w-auto`}>
               <option value="ACTIVE">Active</option>
               <option value="INACTIVE">Inactive</option>
               <option value="all">All</option>
@@ -105,8 +105,8 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
               "No students match these filters."
             ) : (
               <>
-                No students yet. <Link href="/school/students/new" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">Add one</Link> or{" "}
-                <Link href="/school/import" className="font-semibold text-blue-700 transition-colors hover:text-blue-800">import from Excel</Link>.
+                No students yet. <Link href="/school/students/new" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">Add one</Link> or{" "}
+                <Link href="/school/import" className="font-medium text-zinc-950 underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950">import from Excel</Link>.
               </>
             )}
           </EmptyState>
@@ -122,20 +122,20 @@ async function List({ searchParams }: { searchParams: PageProps<"/school/student
                   <th scope="col" className={th}><span className="sr-only">Card</span></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {students.map((s) => (
                   <tr key={s.id} className={tbodyRow}>
                     <td className={td}>
-                      <Link href={`/school/students/${s.id}`} className="flex items-center gap-3 font-bold text-slate-900 transition-colors hover:text-blue-700">
-                        <StudentPhoto student={s} size={32} />
+                      <Link href={`/school/students/${s.id}`} className="flex items-center gap-3 font-medium text-zinc-950 underline-offset-4 hover:underline">
+                        <StudentPhoto student={s} size={28} />
                         {s.fullName}
                       </Link>
                     </td>
-                    <td className={`${td} font-mono text-xs text-slate-700`}>{s.studentCode}</td>
-                    <td className={`${td} text-slate-600`}>{s.classGroup?.name ?? "—"}</td>
+                    <td className={`${td} tabular-nums text-zinc-700`}>{s.studentCode}</td>
+                    <td className={`${td} text-zinc-600`}>{s.classGroup?.name ?? "—"}</td>
                     <td className={td}>{s.status === "ACTIVE" ? <Badge tone="green" dot>Active</Badge> : <Badge dot>Inactive</Badge>}</td>
                     <td className={`${td} text-right`}>
-                      <Link href={`/school/students/${s.id}/card`} className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800">Card</Link>
+                      <Link href={`/school/students/${s.id}/card`} className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950">Card</Link>
                     </td>
                   </tr>
                 ))}

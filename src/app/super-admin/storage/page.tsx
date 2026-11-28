@@ -67,11 +67,11 @@ async function Content() {
         description="Space used by each school against its quota."
         actions={<ActionButton action={recalculateAllStorage} fields={{}} label="Measure all now" pendingLabel="Measuring…" variant="primary" />}
       />
-      <StatGrid className="mb-6 grid-cols-2 lg:grid-cols-4">
-        <Stat label="Total used" value={formatBytes(used)} icon="storage" tone="gold" />
-        <Stat label="Near limit (80%+)" value={warn} icon="warning" tone={warn ? "amber" : "slate"} />
-        <Stat label="Schools full" value={full} icon="error" tone={full ? "red" : "slate"} />
-        <Stat label="Last measured" value={<span className="text-lg font-extrabold">{oldest ? formatDateTime(oldest, PLATFORM_TIME_ZONE) : "—"}</span>} icon="clock" tone="slate" />
+      <StatGrid className="mb-6" cols="grid-cols-2 lg:grid-cols-4">
+        <Stat label="Total used" value={formatBytes(used)} />
+        <Stat label="Near limit (80%+)" value={warn} tone={warn ? "warning" : "neutral"} />
+        <Stat label="Schools full" value={full} tone={full ? "bad" : "neutral"} />
+        <Stat label="Last measured" value={<span className="text-base font-medium">{oldest ? formatDateTime(oldest, PLATFORM_TIME_ZONE) : "—"}</span>} />
       </StatGrid>
       <Card>
         {rows.length === 0 ? (
@@ -87,25 +87,25 @@ async function Content() {
                   <th scope="col" className={th}>Measured</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {rows.map((r) => (
                   <tr key={r.id}>
                     <td className={td}>
-                      <Link href={`/super-admin/schools/${r.id}`} className="font-bold text-slate-900 transition-colors hover:text-blue-700">{r.name}</Link>
+                      <Link href={`/super-admin/schools/${r.id}`} className="font-medium text-zinc-900 transition-colors hover:underline underline-offset-4">{r.name}</Link>
                       {r.status.level === "full" && <span className="ml-2"><Badge tone="red">Full</Badge></span>}
                       {r.status.level === "warning" && <span className="ml-2"><Badge tone="amber">Near limit</Badge></span>}
                     </td>
                     <td className={td}>
                       {r.status.quota.limit === null ? (
-                        <span className="text-slate-600">{formatBytes(r.status.total)} · <span className="text-amber-700">no quota</span></span>
+                        <span className="text-zinc-600">{formatBytes(r.status.total)} · <span className="text-amber-700">no quota</span></span>
                       ) : (
                         <StorageMeter status={r.status} compact />
                       )}
                     </td>
-                    <td className={`${td} text-slate-600`}>
+                    <td className={`${td} text-zinc-600`}>
                       {r.status.quota.source === "custom" ? "Custom quota" : r.status.quota.source === "plan" ? "Plan" : "—"}
                     </td>
-                    <td className={`${td} whitespace-nowrap text-slate-600`}>
+                    <td className={`${td} whitespace-nowrap text-zinc-600`}>
                       {r.storageCalculatedAt ? formatDateTime(r.storageCalculatedAt, PLATFORM_TIME_ZONE) : "Never"}
                     </td>
                   </tr>

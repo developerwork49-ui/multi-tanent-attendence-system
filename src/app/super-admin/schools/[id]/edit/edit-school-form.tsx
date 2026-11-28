@@ -34,7 +34,7 @@ export function EditSchoolForm({ schoolId, initial, timeZones, planLimitLabel }:
           </Field>
         </div>
       </SchoolDetailsFields>
-      <p className="text-xs text-slate-500">
+      <p className="text-xs text-zinc-500">
         Changing the time zone only affects attendance recorded from now on; past attendance keeps its date.
       </p>
       <div className="flex gap-3">

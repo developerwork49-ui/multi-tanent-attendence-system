@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { Geist_Mono, Outfit } from "next/font/google";
-import { MotionProvider } from "@/components/motion/motion-provider";
+import type { Metadata, Viewport } from "next";
+import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
-/* Outfit: geometric display/body face (variable 100–900). */
-const outfit = Outfit({
-  variable: "--font-outfit",
+/* Inter: neutral, highly legible UI face (variable weights). */
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -19,16 +18,14 @@ export const metadata: Metadata = {
   description: "Student attendance management for schools",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${outfit.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">
-        {/* Without JavaScript, show pages immediately (no entrance animation). */}
-        <noscript>
-          <style>{"[data-page]{opacity:1!important;transform:none!important}"}</style>
-        </noscript>
-        <MotionProvider>{children}</MotionProvider>
-      </body>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-white font-sans text-zinc-950">{children}</body>
     </html>
   );
 }

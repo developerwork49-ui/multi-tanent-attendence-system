@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { addSchoolAdmin, resetAdminPassword, setAdminActive } from "../actions";
 import type { FormState } from "@/lib/form";
-import { Button, Field, FormMessage, ariaFor, inputClass } from "@/components/ui";
+import { Button, Field, FormMessage, ariaFor, inputClass, inputBase } from "@/components/ui";
 
 export function AddAdminForm({ schoolId }: { schoolId: number }) {
   const [state, action, pending] = useActionState<FormState, FormData>(addSchoolAdmin, undefined);
@@ -65,9 +65,9 @@ export function AdminRowActions({ userId, email, isActive }: { userId: number; e
     return (
       <form action={resetAction} className="flex flex-wrap items-end gap-2" onSubmit={() => setTimeout(() => setMode("idle"), 0)}>
         <input type="hidden" name="userId" value={userId} />
-        <label className="text-xs text-slate-600">
+        <label className="text-xs text-zinc-600">
           New password for {email}
-          <input name="password" type="password" required minLength={10} maxLength={200} autoComplete="new-password" className={`${inputClass} w-56`} />
+          <input name="password" type="password" required minLength={10} maxLength={200} autoComplete="new-password" className={`${inputBase} mt-1.5 block w-56`} />
         </label>
         <Button type="submit" disabled={resetPending}>Save</Button>
         <Button type="button" variant="secondary" onClick={() => setMode("idle")}>Cancel</Button>
@@ -79,7 +79,7 @@ export function AdminRowActions({ userId, email, isActive }: { userId: number; e
       <form action={toggleAction} className="flex flex-wrap items-center gap-2" onSubmit={() => setTimeout(() => setMode("idle"), 0)}>
         <input type="hidden" name="userId" value={userId} />
         <input type="hidden" name="active" value={isActive ? "false" : "true"} />
-        <span className="text-xs text-slate-700">{isActive ? "Disable this admin? They are signed out immediately." : "Enable this admin again?"}</span>
+        <span className="text-xs text-zinc-700">{isActive ? "Disable this admin? They are signed out immediately." : "Enable this admin again?"}</span>
         <Button type="submit" variant={isActive ? "danger" : "success"} disabled={togglePending}>
           {isActive ? "Yes, disable" : "Yes, enable"}
         </Button>
@@ -90,11 +90,11 @@ export function AdminRowActions({ userId, email, isActive }: { userId: number; e
   const state = resetState ?? toggleState;
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <button type="button" className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800" onClick={() => setMode("reset")}>
+      <button type="button" className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950" onClick={() => setMode("reset")}>
         Reset password
       </button>
-      <span className="text-slate-300">·</span>
-      <button type="button" className="text-sm font-semibold text-blue-700 transition-colors hover:text-blue-800" onClick={() => setMode("toggle")}>
+      <span className="text-zinc-300">·</span>
+      <button type="button" className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950" onClick={() => setMode("toggle")}>
         {isActive ? "Disable" : "Enable"}
       </button>
       {state?.error && <span className="text-xs text-red-600">{state.error}</span>}
